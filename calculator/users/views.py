@@ -1,3 +1,4 @@
+from captcha.fields import CaptchaField
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -12,6 +13,7 @@ class SignUp(CreateView):
     form_class = CreationForm
     success_url = reverse_lazy('calc:index')
     template_name = 'users/signup.html'
+    captcha = CaptchaField()
 
     def form_valid(self, form):
         """
@@ -24,6 +26,7 @@ class SignUp(CreateView):
         Returns:
             HttpResponse: Ответ после успешной обработки формы.
         """
+
         response = super().form_valid(form)
         login(self.request, self.object)  # Войти в систему пользователя
         return response

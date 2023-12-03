@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,3 +136,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CAPTCHA_LENGTH = 4
+
+CAPTCHA_NOISE_FUNCTIONS = [
+    'captcha.helpers.noise_dots',
+    'captcha.helpers.noise_arcs',
+]
