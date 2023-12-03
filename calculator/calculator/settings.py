@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
+    'calc.apps.CalcConfig',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'users:login'
+
+LOGIN_REDIRECT_URL = 'calc:index'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
