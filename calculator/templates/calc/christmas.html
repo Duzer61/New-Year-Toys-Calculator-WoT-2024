@@ -9,11 +9,6 @@
   <div class="container py-5">     
     <h1>Новогодний калькулятор</h1>
     {% include 'calc/includes/switcher.html' %}
-    {% if user.is_authenticated %}
-      <h3>Отечественная коллекция</h3>
-    {% else %}
-      <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
-      <a href="{% url 'users:signup' %}" class="btn btn-secondary">Зарегистрироваться</a>
-    {% endif %}
+    <h3>Рождественская коллекция</h3>
   </div>  
 {% endblock %}
