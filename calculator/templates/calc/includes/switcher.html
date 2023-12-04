@@ -1,0 +1,42 @@
+{% with request.resolver_match.view_name as view_name %}
+{% comment %}
+{% if user.is_authenticated %}
+{% endcomment %}
+  <div class="row my-3">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if view_name == 'calc:index' %}active{% endif %}"
+          href="{% url 'calc:index' %}"
+        >
+          Отечественный
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+           class="nav-link {% if view_name == 'calc:index' %}active{% endif %}"
+           href="{% url 'calc:index' %}"
+        >
+          Рождество
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if view_name == 'calc:index' %}active{% endif %}"
+          href="{% url 'calc:index' %}"
+        >
+          Восточный
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if view_name == 'calc:index' %}active{% endif %}"
+          href="{% url 'calc:index' %}"
+        >
+          Сказочный
+        </a>
+      </li>
+    </ul>
+  </div>
+{# {% endif %} #}
+{% endwith %}
