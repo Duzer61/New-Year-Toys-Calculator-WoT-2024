@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TinydbConfig(AppConfig):
+class Tiny_dbConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'tinydb'
+    name = 'tiny_db'
