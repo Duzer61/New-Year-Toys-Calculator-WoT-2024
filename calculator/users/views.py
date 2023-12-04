@@ -2,7 +2,8 @@ from captcha.fields import CaptchaField
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from tiny_db.views import add_new_user_collection
+# from tiny_db.views import add_new_user_collection
+from mongodb.views import add_new_user_collection
 
 from .forms import CreationForm
 
