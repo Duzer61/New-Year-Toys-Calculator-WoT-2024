@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'calc.apps.CalcConfig',
+    'tiny_db.apps.Tiny_dbConfig',
 ]
 
 MIDDLEWARE = [
