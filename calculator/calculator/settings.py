@@ -139,6 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CAPTCHA_LENGTH = 4
 
+CAPTCHA_FONT_SIZE = 25
+
 CAPTCHA_NOISE_FUNCTIONS = [
     'captcha.helpers.noise_dots',
     'captcha.helpers.noise_arcs',
