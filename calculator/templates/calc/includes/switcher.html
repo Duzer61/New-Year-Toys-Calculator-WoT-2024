@@ -1,0 +1,44 @@
+{% with request.resolver_match.view_name as view_name %}
+{% if user.is_authenticated %}
+  <div class="row my-3">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if view_name == 'calc:index' %}active{% endif %}"
+          href="{% url 'calc:index' %}"
+          style="{% if view_name == 'calc:index' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
+        >
+          Отечественный
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+           class="nav-link {% if view_name == 'calc:christmas' %}active{% endif %}"
+           href="{% url 'calc:christmas' %}"
+           style="{% if view_name == 'calc:christmas' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
+        >
+          Рождество
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if view_name == 'calc:eastern' %}active{% endif %}"
+          href="{% url 'calc:eastern' %}"
+          style="{% if view_name == 'calc:eastern' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
+        >
+          Восточный
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link {% if view_name == 'calc:magic' %}active{% endif %}"
+          href="{% url 'calc:magic' %}"
+          style="{% if view_name == 'calc:magic' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
+        >
+          Сказочный
+        </a>
+      </li>
+    </ul>
+  </div>
+{% endif %}
+{% endwith %}

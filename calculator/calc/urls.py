@@ -7,4 +7,7 @@ app_name = 'calc'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('christmas/', views.christmas, name='christmas'),
+    path('eastern/', views.eastern, name='eastern'),
+    path('magic/', views.magic, name='magic'),
 ]
