@@ -15,20 +15,20 @@
         <form method="post">
           {% csrf_token %}
           <div class="form-group">
-            <label for="input1">Навершие:</label>
-            <input type="number" class="form-control" id="input1" min="0" max="5">
+            <label for="crown">Навершие:</label>
+            <input type="number" class="form-control" id="crown" name="crown" min="0" max="5">
           </div>
           <div class="form-group">
-            <label for="input2">Гирлянда:</label>
-            <input type="number" class="form-control" id="input2" min="0" max="5">
+            <label for="garland">Гирлянда:</label>
+            <input type="number" class="form-control" id="garland" name="garland" min="0" max="5">
           </div>
           <div class="form-group">
-            <label for="input3">Подвесная:</label>
-            <input type="number" class="form-control" id="input3" min="0" max="5">
+            <label for="hanging">Подвесная:</label>
+            <input type="number" class="form-control" id="hanging" name="hanging" min="0" max="5">
           </div>
           <div class="form-group">
-            <label for="input4">Подарок:</label>
-            <input type="number" class="form-control" id="input4" min="0" max="5">
+            <label for="gift">Подарок:</label>
+            <input type="number" class="form-control" id="gift" name="gift" min="0" max="5">
           </div>
           <div class="d-flex justify-content-end mt-2">
             <button type="submit" class="btn btn-primary">
