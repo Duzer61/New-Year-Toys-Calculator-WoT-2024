@@ -16,8 +16,12 @@ def national(request):
     """Выводит шаблон страницы отечественной коллекции."""
 
     username = request.user.username
-    user_data = collection.find_one({'username': username})
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.national': 1}
+    )['collection']['national']
 
+    print(user_data)
     if request.method == 'POST':
         crown = int(request.POST.get('crown'))
         garland = int(request.POST.get('garland'))
@@ -36,27 +40,98 @@ def national(request):
             {'$set': {'collection.national': new_data}}
         )
 
-
-
-    return render(request, 'calc/national.html')
+    return render(request, 'calc/collections.html')
 
 
 @login_required
 def christmas(request):
     """Выводит шаблон страницы рождественской коллекции."""
 
-    return render(request, 'calc/christmas.html')
+    username = request.user.username
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.christmas': 1}
+    )['collection']['christmas']
+
+    print(user_data)
+    if request.method == 'POST':
+        crown = int(request.POST.get('crown'))
+        garland = int(request.POST.get('garland'))
+        hanging = int(request.POST.get('hanging'))
+        gift = int(request.POST.get('gift'))
+
+        new_data = {
+            'crown': crown,
+            'garland': garland,
+            'hanging': hanging,
+            'gift': gift
+        }
+
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.christmas': new_data}}
+        )
+
+    return render(request, 'calc/collections.html')
 
 
 @login_required
 def eastern(request):
     """Выводит шаблон страницы восточной коллекции."""
 
-    return render(request, 'calc/eastern.html')
+    username = request.user.username
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.eastern': 1}
+    )['collection']['eastern']
+
+    print(user_data)
+    if request.method == 'POST':
+        crown = int(request.POST.get('crown'))
+        garland = int(request.POST.get('garland'))
+        hanging = int(request.POST.get('hanging'))
+        gift = int(request.POST.get('gift'))
+
+        new_data = {
+            'crown': crown,
+            'garland': garland,
+            'hanging': hanging,
+            'gift': gift
+        }
+
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.eastern': new_data}}
+        )
+    return render(request, 'calc/collections.html')
 
 
 @login_required
 def magic(request):
     """Выводит шаблон страницы сказочной коллекции."""
 
-    return render(request, 'calc/magic.html')
+    username = request.user.username
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.magic': 1}
+    )['collection']['magic']
+
+    print(user_data)
+    if request.method == 'POST':
+        crown = int(request.POST.get('crown'))
+        garland = int(request.POST.get('garland'))
+        hanging = int(request.POST.get('hanging'))
+        gift = int(request.POST.get('gift'))
+
+        new_data = {
+            'crown': crown,
+            'garland': garland,
+            'hanging': hanging,
+            'gift': gift
+        }
+
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.magic': new_data}}
+        )
+    return render(request, 'calc/collections.html')
