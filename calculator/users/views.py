@@ -13,7 +13,7 @@ class SignUp(CreateView):
     Класс представления для регистрации новых пользователей.
     """
     form_class = CreationForm
-    success_url = reverse_lazy('calc:index')
+    success_url = reverse_lazy('calc:national')
     template_name = 'users/signup.html'
     captcha = CaptchaField()
 
