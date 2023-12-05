@@ -6,11 +6,29 @@
 
 {% block content %}
 {% load user_filters %}
-  <div class="container py-5">     
+  <div class="container py-5 col-md-6">     
     <h1>Новогодний калькулятор</h1>
     {% include 'calc/includes/switcher.html' %}
     {% if user.is_authenticated %}
       <h3>Отечественная коллекция</h3>
+      <div class="container py-5">
+        <div class="form-group">
+          <label for="input1">Навершие:</label>
+          <input type="number" class="form-control" id="input1" min="0" max="5">
+        </div>
+        <div class="form-group">
+          <label for="input2">Гирлянда:</label>
+          <input type="number" class="form-control" id="input2" min="0" max="5">
+        </div>
+        <div class="form-group">
+          <label for="input3">Подвесная:</label>
+          <input type="number" class="form-control" id="input3" min="0" max="5">
+        </div>
+        <div class="form-group">
+          <label for="input4">Подарок:</label>
+          <input type="number" class="form-control" id="input4" min="0" max="5">
+        </div>
+      </div>
     {% else %}
       <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
       <a href="{% url 'users:signup' %}" class="btn btn-secondary">Зарегистрироваться</a>
