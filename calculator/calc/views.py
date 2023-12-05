@@ -1,25 +1,96 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from mongodb.mongo_init import collection
+
+from .forms import ToysForm
 
 
 def index(request):
     """Выводит шаблон главной страницы."""
-
+    if request.user.is_authenticated:
+        return redirect('calc:national')
     return render(request, 'calc/index.html')
 
 
+@login_required
+def national(request):
+    """Выводит шаблон страницы отечественной коллекции."""
+
+    username = request.user.username
+    form = ToysForm(request.POST or None)
+    if form.is_valid():
+        forms_data = form.cleaned_data
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.national': forms_data}}
+        )
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.national': 1}
+    )['collection']['national']
+
+    context = {'user_data': user_data}
+    return render(request, 'calc/collections.html', context)
+
+
+@login_required
 def christmas(request):
     """Выводит шаблон страницы рождественской коллекции."""
 
-    return render(request, 'calc/christmas.html')
+    username = request.user.username
+    form = ToysForm(request.POST or None)
+    if form.is_valid():
+        forms_data = form.cleaned_data
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.christmas': forms_data}}
+        )
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.christmas': 1}
+    )['collection']['christmas']
+
+    context = {'user_data': user_data}
+    return render(request, 'calc/collections.html', context)
 
 
+@login_required
 def eastern(request):
     """Выводит шаблон страницы восточной коллекции."""
 
-    return render(request, 'calc/eastern.html')
+    username = request.user.username
+    form = ToysForm(request.POST or None)
+    if form.is_valid():
+        forms_data = form.cleaned_data
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.eastern': forms_data}}
+        )
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.eastern': 1}
+    )['collection']['eastern']
+
+    context = {'user_data': user_data}
+    return render(request, 'calc/collections.html', context)
 
 
+@login_required
 def magic(request):
     """Выводит шаблон страницы сказочной коллекции."""
 
-    return render(request, 'calc/magic.html')
+    username = request.user.username
+    form = ToysForm(request.POST or None)
+    if form.is_valid():
+        forms_data = form.cleaned_data
+        collection.update_one(
+            {'username': username},
+            {'$set': {'collection.magic': forms_data}}
+        )
+    user_data = collection.find_one(
+        {'username': username},
+        {'collection.magic': 1}
+    )['collection']['magic']
+
+    context = {'user_data': user_data}
+    return render(request, 'calc/collections.html', context)
