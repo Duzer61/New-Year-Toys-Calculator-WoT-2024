@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from mongodb.mongo_init import collection
+from mongodb.views import add_new_user_collection
 
 from .forms import ToysForm
 
@@ -27,7 +28,13 @@ def national(request):
     user_data = collection.find_one(
         {'username': username},
         {'collection.national': 1}
-    )['collection']['national']
+    )
+    # Проверка, если пользователь был создан ранее, но его коллекции нет в БД
+    if user_data:
+        user_data = user_data['collection']['national']
+    else:  # Если у пользователя нет коллекции, то создаем пустую
+        add_new_user_collection(username)
+        user_data = {'crown': 0, 'garland': 0, 'hanging': 0, 'magic': 0}
 
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
