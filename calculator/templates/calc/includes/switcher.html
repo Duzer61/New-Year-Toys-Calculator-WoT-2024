@@ -13,15 +13,6 @@
       </li>
       <li class="nav-item">
         <a 
-           class="nav-link {% if view_name == 'calc:christmas' %}active{% endif %}"
-           href="{% url 'calc:christmas' %}"
-           style="{% if view_name == 'calc:christmas' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
-        >
-          Рождество
-        </a>
-      </li>
-      <li class="nav-item">
-        <a 
           class="nav-link {% if view_name == 'calc:eastern' %}active{% endif %}"
           href="{% url 'calc:eastern' %}"
           style="{% if view_name == 'calc:eastern' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
@@ -36,6 +27,15 @@
           style="{% if view_name == 'calc:magic' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
         >
           Сказочный
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+           class="nav-link {% if view_name == 'calc:christmas' %}active{% endif %}"
+           href="{% url 'calc:christmas' %}"
+           style="{% if view_name == 'calc:christmas' %}color: #7B001C; text-shadow: 0 0 8px #e6a80e;{% endif %}"
+        >
+          Рождество
         </a>
       </li>
     </ul>
