@@ -2,6 +2,8 @@ from mongodb.initial_data import COLLECTION_DATA
 from mongodb.mongo_init import toys
 from mongodb.views import add_new_user_collection
 
+from .main_calc import trial_function
+
 
 def form_handler(request, form, username, collection_name):
     """Обрабатывает форму."""
@@ -14,7 +16,8 @@ def form_handler(request, form, username, collection_name):
             {'$set': {collection_full_name: forms_data}}
         )
         if 'calculate' in request.POST:  # Если нажата кнопка "Рассчитать"
-            print('Вычисляем')
+            result = trial_function(username)
+            print(result)
     user_data = toys.find_one(
         {'username': username},
         {collection_full_name: 1}
