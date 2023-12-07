@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from mongodb.initial_data import COLLECTION_DATA
-from mongodb.mongo_init import collection
-from mongodb.views import add_new_user_collection
 
 from .forms import ToysForm
+from .utils import form_handler
+
+# from mongodb.initial_data import COLLECTION_DATA
+# from mongodb.mongo_init import collection
+# from mongodb.views import add_new_user_collection
 
 
 def index(request):
@@ -20,23 +22,7 @@ def national(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    if form.is_valid():
-        forms_data = form.cleaned_data
-        collection.update_one(
-            {'username': username},
-            {'$set': {'collection.national': forms_data}}
-        )
-    user_data = collection.find_one(
-        {'username': username},
-        {'collection.national': 1}
-    )
-    # Проверка, если пользователь был создан ранее, но его коллекции нет в БД
-    if user_data:
-        user_data = user_data['collection']['national']
-    else:  # Если у пользователя нет коллекции, то создаем пустую
-        add_new_user_collection(username)
-        user_data = COLLECTION_DATA
-
+    user_data = form_handler(request, form, username, 'national')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
 
@@ -47,17 +33,7 @@ def christmas(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    if form.is_valid():
-        forms_data = form.cleaned_data
-        collection.update_one(
-            {'username': username},
-            {'$set': {'collection.christmas': forms_data}}
-        )
-    user_data = collection.find_one(
-        {'username': username},
-        {'collection.christmas': 1}
-    )['collection']['christmas']
-
+    user_data = form_handler(request, form, username, 'christmas')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
 
@@ -68,17 +44,7 @@ def eastern(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    if form.is_valid():
-        forms_data = form.cleaned_data
-        collection.update_one(
-            {'username': username},
-            {'$set': {'collection.eastern': forms_data}}
-        )
-    user_data = collection.find_one(
-        {'username': username},
-        {'collection.eastern': 1}
-    )['collection']['eastern']
-
+    user_data = form_handler(request, form, username, 'eastern')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
 
@@ -89,16 +55,6 @@ def magic(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    if form.is_valid():
-        forms_data = form.cleaned_data
-        collection.update_one(
-            {'username': username},
-            {'$set': {'collection.magic': forms_data}}
-        )
-    user_data = collection.find_one(
-        {'username': username},
-        {'collection.magic': 1}
-    )['collection']['magic']
-
+    user_data = form_handler(request, form, username, 'magic')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
