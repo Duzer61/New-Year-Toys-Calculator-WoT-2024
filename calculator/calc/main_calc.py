@@ -40,10 +40,14 @@ def get_all_random_craft(user_df):
     toys_collected = user_df.sum().sum()  # Количество собранных игрушек
     diff = TOTAL_TOYS - toys_collected  # Всего осталось собрать игрушек
     print(f'Всего осталось собрать {diff} игрушек.')
+    # Вероятность удачного крафта одной игрушки в случайной
+    # коллекции в случайной категории
     chance = diff/TOTAL_TOYS * 100
     print(f'Вероятность удачного крафта одной игрушки: {round(chance, 2)}')
+    # Среднее количество попыток на крафт
     average_attempts_num = 100 / chance
     print(f'Среднее количество попыток: {round(average_attempts_num, 2)}')
+    # Среднее количество осколков на крафт
     average_fragments_num = (
         (average_attempts_num - 1) * (ALL_RANDOM_CRAFT - ONE_TOY_FRAGMENTS)
         + ALL_RANDOM_CRAFT
@@ -52,7 +56,11 @@ def get_all_random_craft(user_df):
         f'Среднее количество осколков на случайный крафт: '
         f'{round(average_fragments_num, 2)}'
     )
-    return 'Далее вычисляем по коллекциям.'
+    data = {
+        'chance': chance,
+        'average_fragments_num': average_fragments_num,
+    }
+    return data
 
 
 def get_specific_collection_craft(user_df):
@@ -84,7 +92,11 @@ def get_specific_collection_craft(user_df):
         f'Среднее количество осколков на крафт в определенной коллекции: \n'
         f'{round(average_fragments_num, 2)}'
     )
-    return 'Далее вычисляем по категориям...'
+    data = {
+        'chance': chance,
+        'average_fragments_num': average_fragments_num,
+    }
+    return data
 
 
 def get_specific_category_craft(user_df):
@@ -116,7 +128,11 @@ def get_specific_category_craft(user_df):
         f'Среднее количество осколков на крафт в определенной категории: \n'
         f'{round(average_fragments_num, 2)}'
     )
-    return 'Далее...'
+    data = {
+        'chance': chance,
+        'average_fragments_num': average_fragments_num,
+    }
+    return data
 
 
 def get_all_cpecific_craft(user_df):
@@ -150,7 +166,11 @@ def get_all_cpecific_craft(user_df):
         f'Среднее количество осколков на крафт в определенной коллекции '
         f'и определенной категории: \n {round(average_fragments_num, 2)}'
     )
-    return average_fragments_num
+    data = {
+        'chance': сhance,
+        'average_fragments_num': average_fragments_num,
+    }
+    return data
 
 
 def main_calc(username):
@@ -165,12 +185,15 @@ def main_calc(username):
         print(full_df)
         print(user_df == full_df)
         if (user_df == full_df).all().all():
-            return 'Все коллекции собраны'
+            return 'All collections are collected'
         all_random_craft = get_all_random_craft(user_df)
-        print(all_random_craft)
         specific_collection_craft = get_specific_collection_craft(user_df)
-        print(specific_collection_craft)
         specific_category_craft = get_specific_category_craft(user_df)
-        print(specific_category_craft)
         all_specific_craft = get_all_cpecific_craft(user_df)
-        return all_specific_craft
+        result = {
+            'all_random_craft': all_random_craft,
+            'specific_collection_craft': specific_collection_craft,
+            'specific_category_craft': specific_category_craft,
+            'all_specific_craft': all_specific_craft,
+        }
+        return result
