@@ -1,10 +1,6 @@
 from django import forms
 
-# Максимальные количество игрушек в каждой категории
-MAX_HANGING = 7
-MAX_CROWN = 4
-MAX_GIFT = 6
-MAX_GARLAND = 6
+from .constants import MAX_CROWN, MAX_GARLAND, MAX_GIFT, MAX_HANGING
 
 
 class ToysForm(forms.Form):
