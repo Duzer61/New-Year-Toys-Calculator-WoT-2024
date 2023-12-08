@@ -150,10 +150,10 @@ def get_all_cpecific_craft(user_df):
         f'Среднее количество осколков на крафт в определенной коллекции '
         f'и определенной категории: \n {round(average_fragments_num, 2)}'
     )
-    return 'Далее...'
+    return average_fragments_num
 
 
-def trial_function(username):
+def main_calc(username):
     """Функция для проверки работы калькулятора."""
     print('Зашли в калькулятор')
     user_collection = get_user_collection(username)

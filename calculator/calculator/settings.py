@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'calc.apps.CalcConfig',
     'mongodb.apps.MongodbConfig',
+    'recommendations.apps.RecommendationsConfig',
 ]
 
 MIDDLEWARE = [
