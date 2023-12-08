@@ -1,8 +1,9 @@
 import pandas as pd
 
-from .constants import (ALL_RANDOM_CRAFT, HALF_SPECIFIC_CRAFT, MAX_CROWN,
-                        MAX_GARLAND, MAX_GIFT, MAX_HANGING,
-                        MAX_TOYS_IN_COLLECTION, ONE_TOY_FRAGMENTS, TOTAL_TOYS)
+from .constants import (ALL_RANDOM_CRAFT, ALL_SPECIFIC_CRAFT,
+                        HALF_SPECIFIC_CRAFT, MAX_CROWN, MAX_GARLAND, MAX_GIFT,
+                        MAX_HANGING, MAX_TOYS_IN_COLLECTION, ONE_TOY_FRAGMENTS,
+                        TOTAL_TOYS)
 from .utils import toys
 
 FULL_COLLECTION_DATA = {
@@ -47,7 +48,11 @@ def get_all_random_craft(user_df):
         (average_attempts_num - 1) * (ALL_RANDOM_CRAFT - ONE_TOY_FRAGMENTS)
         + ALL_RANDOM_CRAFT
     )
-    return f'Среднее количество осколков: {round(average_fragments_num, 2)}'
+    print(
+        f'Среднее количество осколков на случайный крафт: '
+        f'{round(average_fragments_num, 2)}'
+    )
+    return 'Далее вычисляем по коллекциям.'
 
 
 def get_specific_collection_craft(user_df):
@@ -75,10 +80,77 @@ def get_specific_collection_craft(user_df):
         (average_attempts_num - 1) * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
         + HALF_SPECIFIC_CRAFT
     )
-    return (
+    print(
         f'Среднее количество осколков на крафт в определенной коллекции: \n'
         f'{round(average_fragments_num, 2)}'
     )
+    return 'Далее вычисляем по категориям...'
+
+
+def get_specific_category_craft(user_df):
+    """
+    Вычисляет среднее количество осколков на крафт одной игрушки
+    в определенной категории в случайной коллекции.
+    """
+    # Осталось собрать игрушек для каждой категории
+    missing_toys_in_categories = full_df.sum(axis=1) - user_df.sum(axis=1)
+    print(missing_toys_in_categories)
+    # Вероятность удачного крафта в каждой категории в случайной коллекции
+    chance = missing_toys_in_categories / full_df.sum(axis=1) * 100
+    print(
+        f'Вероятность удачного крафта в определенной категории: \n'
+        f'{round(chance, 2)}'
+    )
+    # Среднее количество попыток на крафт в категории
+    average_attempts_num = 100 / chance
+    print(
+        f'Среднее количество попыток на крафт в определенной категории: \n'
+        f'{round(average_attempts_num, 2)}'
+    )
+    # Среднее количество осколков на крафт в определенной коллекции
+    average_fragments_num = (
+        (average_attempts_num - 1) * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
+        + HALF_SPECIFIC_CRAFT
+    )
+    print(
+        f'Среднее количество осколков на крафт в определенной категории: \n'
+        f'{round(average_fragments_num, 2)}'
+    )
+    return 'Далее...'
+
+
+def get_all_cpecific_craft(user_df):
+    """
+    Вычисляет среднее количество осколков на крафт одной игрушки
+    в определенной категории в определенной коллекции.
+    """
+    # Осталось собрать игрушек для категории в каждой коллекции
+    missing_toys = full_df - user_df
+    print(missing_toys)
+    # Вероятность удачного крафта в каждой категории каждой коллекции
+    сhance = missing_toys / full_df * 100
+    print(
+        f'Вероятность удачного крафта в каждой категории каждой коллекции: \n'
+        f'{round(сhance, 2)}'
+    )
+    # Среднее количество попыток на крафт в определенной коллекции
+    # и определенной категории
+    average_attempts_num = 100 / сhance
+    print(
+        f'Среднее количество попыток на крафт в определенной коллекции '
+        f'и определенной категории: \n {round(average_attempts_num, 2)}'
+    )
+    # Среднее количество осколков на крафт в определенной коллекции
+    # и определенной категории
+    average_fragments_num = (
+        (average_attempts_num - 1) * (ALL_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
+        + ALL_SPECIFIC_CRAFT
+    )
+    print(
+        f'Среднее количество осколков на крафт в определенной коллекции '
+        f'и определенной категории: \n {round(average_fragments_num, 2)}'
+    )
+    return 'Далее...'
 
 
 def trial_function(username):
@@ -97,5 +169,8 @@ def trial_function(username):
         all_random_craft = get_all_random_craft(user_df)
         print(all_random_craft)
         specific_collection_craft = get_specific_collection_craft(user_df)
-
-        return specific_collection_craft
+        print(specific_collection_craft)
+        specific_category_craft = get_specific_category_craft(user_df)
+        print(specific_category_craft)
+        all_specific_craft = get_all_cpecific_craft(user_df)
+        return all_specific_craft
