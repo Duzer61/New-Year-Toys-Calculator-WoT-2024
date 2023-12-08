@@ -93,8 +93,8 @@ def get_specific_collection_craft(user_df):
         f'{round(average_fragments_num, 2)}'
     )
     data = {
-        'chance': chance,
-        'average_fragments_num': average_fragments_num,
+        'chance': chance.to_dict(),
+        'average_fragments_num': average_fragments_num.to_dict(),
     }
     return data
 
@@ -129,8 +129,8 @@ def get_specific_category_craft(user_df):
         f'{round(average_fragments_num, 2)}'
     )
     data = {
-        'chance': chance,
-        'average_fragments_num': average_fragments_num,
+        'chance': chance.to_dict(),
+        'average_fragments_num': average_fragments_num.to_dict(),
     }
     return data
 
@@ -167,33 +167,37 @@ def get_all_cpecific_craft(user_df):
         f'и определенной категории: \n {round(average_fragments_num, 2)}'
     )
     data = {
-        'chance': сhance,
-        'average_fragments_num': average_fragments_num,
+        'chance': сhance.to_dict(),
+        'average_fragments_num': average_fragments_num.to_dict(),
     }
     return data
 
 
 def main_calc(username):
-    """Функция для проверки работы калькулятора."""
+    """
+    Считает вероятности удачного крафта по колекциям
+    и категориям и количество осколков, которое в среднем
+    необходимо потратить на крафт игрушки. Возвращает
+    результаты в виде словаря.
+    """
     print('Зашли в калькулятор')
     user_collection = get_user_collection(username)
-    if user_collection:
-        print(user_collection)
-        user_df = pd.DataFrame(user_collection)
-        print(user_df)
-        print(f'Всего собрано {user_df.sum().sum()} игрушек')
-        print(full_df)
-        print(user_df == full_df)
-        if (user_df == full_df).all().all():
-            return 'All collections are collected'
-        all_random_craft = get_all_random_craft(user_df)
-        specific_collection_craft = get_specific_collection_craft(user_df)
-        specific_category_craft = get_specific_category_craft(user_df)
-        all_specific_craft = get_all_cpecific_craft(user_df)
-        result = {
-            'all_random_craft': all_random_craft,
-            'specific_collection_craft': specific_collection_craft,
-            'specific_category_craft': specific_category_craft,
-            'all_specific_craft': all_specific_craft,
-        }
-        return result
+    print(user_collection)
+    user_df = pd.DataFrame(user_collection)
+    print(user_df)
+    print(f'Всего собрано {user_df.sum().sum()} игрушек')
+    print(full_df)
+    print(user_df == full_df)
+    if (user_df == full_df).all().all():
+        return 'All collections are collected'
+    all_random_craft = get_all_random_craft(user_df)
+    specific_collection_craft = get_specific_collection_craft(user_df)
+    specific_category_craft = get_specific_category_craft(user_df)
+    all_specific_craft = get_all_cpecific_craft(user_df)
+    result = {
+        'all_random_craft': all_random_craft,
+        'specific_collection_craft': specific_collection_craft,
+        'specific_category_craft': specific_category_craft,
+        'all_specific_craft': all_specific_craft,
+    }
+    return result

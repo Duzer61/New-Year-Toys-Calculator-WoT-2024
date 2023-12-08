@@ -6,6 +6,11 @@
 
 {% block content %}
 {% load user_filters %}
-    <p> Рекомендации </p>
+  <p> Рекомендации </p>
+  {% if user_df %}
+    {{ user_df|safe }}
+  {% else %}
+  <p>No data to display</p>
+  {% endif %}
 
 {% endblock %}
