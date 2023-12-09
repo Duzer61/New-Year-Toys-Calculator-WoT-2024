@@ -188,8 +188,8 @@ def main_calc(username):
     print(f'Всего собрано {user_df.sum().sum()} игрушек')
     print(full_df)
     print(user_df == full_df)
-    if (user_df == full_df).all().all():
-        return 'All collections are collected'
+    # if (user_df == full_df).all().all():
+    #     return 'All collections are collected'
     all_random_craft = get_all_random_craft(user_df)
     specific_collection_craft = get_specific_collection_craft(user_df)
     specific_category_craft = get_specific_category_craft(user_df)

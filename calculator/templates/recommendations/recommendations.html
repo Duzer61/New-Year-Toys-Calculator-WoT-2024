@@ -6,7 +6,12 @@
 
 {% block content %}
 {% load user_filters %}
-
-{% include 'recommendations/includes/chance_table.html' %}
-
+<div class="container py-5 col-md-6">
+  <div class="p-3">
+    {% include 'recommendations/includes/chance_table.html' %}
+  </div>
+  <div class="p-3">
+    {% include 'recommendations/includes/fragments_table.html' %}
+  </div>
+</div>
 {% endblock %}
