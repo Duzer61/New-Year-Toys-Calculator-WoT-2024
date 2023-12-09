@@ -1,0 +1,92 @@
+{% if user.is_authenticated %}
+<div class="container py-5 col-md-6">
+    <table class="table table-success caption-top">
+      <caption>
+        В центре таблицы расположены вероятности крафта игрушки в процентах в определенной коллекции
+        и определенной категории. Внизу таблицы - вероятность крафта в определенной
+        коллекции, но в случайной категории. В правой части таблицы - вероятность крафта в
+        определенной категории, но в случайной коллекции.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Коллекция/категория</th>
+          <th scope="col">Отечественная</th>
+          <th scope="col">Восточная</th>
+          <th scope="col">Сказочная</th>
+          <th scope="col">Рождественская</th>
+          <th scope="col" class="table-warning">Все коллекции</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Подвесная</th>
+          {% for key, values in user_result.all_specific_craft.chance.items %}
+            {% for key, value in values.items %}
+              {% if key == 'hanging' %}
+                <td>
+                  {{ value|floatformat:2 }}
+                </td>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          <td class="table-warning">
+            {{ user_result.specific_category_craft.chance.hanging|floatformat:2 }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Навершие</th>
+          {% for key, values in user_result.all_specific_craft.chance.items %}
+            {% for key, value in values.items %}
+              {% if key == 'crown' %}
+                <td>
+                  {{ value|floatformat:2 }}
+                </td>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          <td class="table-warning">
+            {{ user_result.specific_category_craft.chance.crown|floatformat:2 }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Подарок</th>
+          {% for key, values in user_result.all_specific_craft.chance.items %}
+            {% for key, value in values.items %}
+              {% if key == 'gift' %}
+                <td>
+                  {{ value|floatformat:2 }}
+                </td>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          <td class="table-warning">
+            {{ user_result.specific_category_craft.chance.gift|floatformat:2 }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Гирлянда</th>
+          {% for key, values in user_result.all_specific_craft.chance.items %}
+            {% for key, value in values.items %}
+              {% if key == 'garland' %}
+                <td>
+                  {{ value|floatformat:2 }}
+                </td>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          <td class="table-warning">
+            {{ user_result.specific_category_craft.chance.garland|floatformat:2 }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" class="table-warning">Все категории</th>
+          {% for key, value in user_result.specific_collection_craft.chance.items %}
+            <td class="table-warning">
+              {{ value|floatformat:2 }}
+            </td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+{% endif %}

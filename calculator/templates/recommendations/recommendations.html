@@ -6,76 +6,7 @@
 
 {% block content %}
 {% load user_filters %}
-<div class="container py-5 col-md-6">
-  <table class="table table-success">
-    <thead>
-      <tr>
-        <th scope="col">Коллекция/категория</th>
-        <th scope="col">Отечественная</th>
-        <th scope="col">Восточная</th>
-        <th scope="col">Сказочная</th>
-        <th scope="col">Рождественская</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">Подвесная</th>
-        {% for key, values in user_result.all_specific_craft.chance.items %}
-          {% for key, value in values.items %}
-            {% if key == 'hanging' %}
-              <td>
-                {{ value|floatformat:2 }}
-              </td>
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-      </tr>
-      <tr>
-        <th scope="row">Навершие</th>
-        {% for key, values in user_result.all_specific_craft.chance.items %}
-          {% for key, value in values.items %}
-            {% if key == 'crown' %}
-              <td>
-                {{ value|floatformat:2 }}
-              </td>
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-      </tr>
-      <tr>
-        <th scope="row">Подарок</th>
-        {% for key, values in user_result.all_specific_craft.chance.items %}
-          {% for key, value in values.items %}
-            {% if key == 'gift' %}
-              <td>
-                {{ value|floatformat:2 }}
-              </td>
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-      </tr>
-      <tr>
-        <th scope="row">Гирлянда</th>
-        {% for key, values in user_result.all_specific_craft.chance.items %}
-          {% for key, value in values.items %}
-            {% if key == 'garland' %}
-              <td>
-                {{ value|floatformat:2 }}
-              </td>
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-      </tr>
-      <tr>
-        <th scope="row">Все категории</th>
-        {% for key, value in user_result.specific_collection_craft.chance.items %}
-          <td>
-            {{ value|floatformat:2 }}
-          </td>
-        {% endfor %}
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+{% include 'recommendations/includes/chance_table.html' %}
 
 {% endblock %}
