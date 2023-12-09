@@ -66,6 +66,14 @@
           {% endfor %}
         {% endfor %}
       </tr>
+      <tr>
+        <th scope="row">Все категории</th>
+        {% for key, value in user_result.specific_collection_craft.chance.items %}
+          <td>
+            {{ value|floatformat:2 }}
+          </td>
+        {% endfor %}
+      </tr>
     </tbody>
   </table>
 </div>
