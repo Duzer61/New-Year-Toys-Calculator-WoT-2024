@@ -20,31 +20,51 @@
     <tbody>
       <tr>
         <th scope="row">Подвесная</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
+        {% for key, values in user_result.all_specific_craft.chance.items %}
+          {% for key, value in values.items %}
+            {% if key == 'hanging' %}
+              <td>
+                {{ value|floatformat:2 }}
+              </td>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
       </tr>
       <tr>
         <th scope="row">Навершие</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        <td>@fat</td>
+        {% for key, values in user_result.all_specific_craft.chance.items %}
+          {% for key, value in values.items %}
+            {% if key == 'crown' %}
+              <td>
+                {{ value|floatformat:2 }}
+              </td>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
       </tr>
       <tr>
         <th scope="row">Подарок</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        <td>@fat</td>
+        {% for key, values in user_result.all_specific_craft.chance.items %}
+          {% for key, value in values.items %}
+            {% if key == 'gift' %}
+              <td>
+                {{ value|floatformat:2 }}
+              </td>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
       </tr>
       <tr>
         <th scope="row">Гирлянда</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        <td>@fat</td>
+        {% for key, values in user_result.all_specific_craft.chance.items %}
+          {% for key, value in values.items %}
+            {% if key == 'garland' %}
+              <td>
+                {{ value|floatformat:2 }}
+              </td>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
       </tr>
     </tbody>
   </table>
