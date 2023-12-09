@@ -6,11 +6,48 @@
 
 {% block content %}
 {% load user_filters %}
-  <p> Рекомендации </p>
-  {% if user_df %}
-    {{ user_df|safe }}
-  {% else %}
-  <p>No data to display</p>
-  {% endif %}
+<div class="container py-5 col-md-6">
+  <table class="table table-success">
+    <thead>
+      <tr>
+        <th scope="col">Коллекция/категория</th>
+        <th scope="col">Отечественная</th>
+        <th scope="col">Восточная</th>
+        <th scope="col">Сказочная</th>
+        <th scope="col">Рождественская</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Подвесная</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">Навершие</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">Подарок</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">Гирлянда</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+        <td>@fat</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

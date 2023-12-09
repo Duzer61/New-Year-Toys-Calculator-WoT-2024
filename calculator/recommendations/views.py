@@ -8,5 +8,6 @@ def recommendations(request):
     """Выводит шаблон страницы рекомендаций."""
     username = request.user.username
     user_result = results.find_one({'username': username})['result']
-    user_df = pd.DataFrame(user_result)
-    return render(request, 'recommendations/recommendations.html', {'user_df': user_df.to_html()})
+    context = {'user_result': user_result}
+    print(context)
+    return render(request, 'recommendations/recommendations.html', context)
