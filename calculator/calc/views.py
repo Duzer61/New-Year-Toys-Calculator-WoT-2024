@@ -22,7 +22,9 @@ def national(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    user_data = form_handler(request, form, username, 'national')
+    user_data, is_calc = form_handler(request, form, username, 'national')
+    if is_calc:
+        return redirect('recommendations:recommendations')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
 
@@ -33,7 +35,9 @@ def christmas(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    user_data = form_handler(request, form, username, 'christmas')
+    user_data, is_calc = form_handler(request, form, username, 'christmas')
+    if is_calc:
+        return redirect('recommendations:recommendations')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
 
@@ -44,7 +48,9 @@ def eastern(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    user_data = form_handler(request, form, username, 'eastern')
+    user_data, is_calc = form_handler(request, form, username, 'eastern')
+    if is_calc:
+        return redirect('recommendations:recommendations')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)
 
@@ -55,6 +61,8 @@ def magic(request):
 
     username = request.user.username
     form = ToysForm(request.POST or None)
-    user_data = form_handler(request, form, username, 'magic')
+    user_data, is_calc = form_handler(request, form, username, 'magic')
+    if is_calc:
+        return redirect('recommendations:recommendations')
     context = {'user_data': user_data}
     return render(request, 'calc/collections.html', context)

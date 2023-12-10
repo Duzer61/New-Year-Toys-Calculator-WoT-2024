@@ -40,10 +40,14 @@ def get_all_random_craft(user_df):
     toys_collected = user_df.sum().sum()  # Количество собранных игрушек
     diff = TOTAL_TOYS - toys_collected  # Всего осталось собрать игрушек
     print(f'Всего осталось собрать {diff} игрушек.')
+    # Вероятность удачного крафта одной игрушки в случайной
+    # коллекции в случайной категории
     chance = diff/TOTAL_TOYS * 100
     print(f'Вероятность удачного крафта одной игрушки: {round(chance, 2)}')
+    # Среднее количество попыток на крафт
     average_attempts_num = 100 / chance
     print(f'Среднее количество попыток: {round(average_attempts_num, 2)}')
+    # Среднее количество осколков на крафт
     average_fragments_num = (
         (average_attempts_num - 1) * (ALL_RANDOM_CRAFT - ONE_TOY_FRAGMENTS)
         + ALL_RANDOM_CRAFT
@@ -52,7 +56,11 @@ def get_all_random_craft(user_df):
         f'Среднее количество осколков на случайный крафт: '
         f'{round(average_fragments_num, 2)}'
     )
-    return 'Далее вычисляем по коллекциям.'
+    data = {
+        'chance': chance,
+        'average_fragments_num': average_fragments_num,
+    }
+    return data
 
 
 def get_specific_collection_craft(user_df):
@@ -84,7 +92,11 @@ def get_specific_collection_craft(user_df):
         f'Среднее количество осколков на крафт в определенной коллекции: \n'
         f'{round(average_fragments_num, 2)}'
     )
-    return 'Далее вычисляем по категориям...'
+    data = {
+        'chance': chance.to_dict(),
+        'average_fragments_num': average_fragments_num.to_dict(),
+    }
+    return data
 
 
 def get_specific_category_craft(user_df):
@@ -116,7 +128,11 @@ def get_specific_category_craft(user_df):
         f'Среднее количество осколков на крафт в определенной категории: \n'
         f'{round(average_fragments_num, 2)}'
     )
-    return 'Далее...'
+    data = {
+        'chance': chance.to_dict(),
+        'average_fragments_num': average_fragments_num.to_dict(),
+    }
+    return data
 
 
 def get_all_cpecific_craft(user_df):
@@ -150,27 +166,38 @@ def get_all_cpecific_craft(user_df):
         f'Среднее количество осколков на крафт в определенной коллекции '
         f'и определенной категории: \n {round(average_fragments_num, 2)}'
     )
-    return 'Далее...'
+    data = {
+        'chance': сhance.to_dict(),
+        'average_fragments_num': average_fragments_num.to_dict(),
+    }
+    return data
 
 
-def trial_function(username):
-    """Функция для проверки работы калькулятора."""
+def main_calc(username):
+    """
+    Считает вероятности удачного крафта по колекциям
+    и категориям и количество осколков, которое в среднем
+    необходимо потратить на крафт игрушки. Возвращает
+    результаты в виде словаря.
+    """
     print('Зашли в калькулятор')
     user_collection = get_user_collection(username)
-    if user_collection:
-        print(user_collection)
-        user_df = pd.DataFrame(user_collection)
-        print(user_df)
-        print(f'Всего собрано {user_df.sum().sum()} игрушек')
-        print(full_df)
-        print(user_df == full_df)
-        if (user_df == full_df).all().all():
-            return 'Все коллекции собраны'
-        all_random_craft = get_all_random_craft(user_df)
-        print(all_random_craft)
-        specific_collection_craft = get_specific_collection_craft(user_df)
-        print(specific_collection_craft)
-        specific_category_craft = get_specific_category_craft(user_df)
-        print(specific_category_craft)
-        all_specific_craft = get_all_cpecific_craft(user_df)
-        return all_specific_craft
+    print(user_collection)
+    user_df = pd.DataFrame(user_collection)
+    print(user_df)
+    print(f'Всего собрано {user_df.sum().sum()} игрушек')
+    print(full_df)
+    print(user_df == full_df)
+    # if (user_df == full_df).all().all():
+    #     return 'All collections are collected'
+    all_random_craft = get_all_random_craft(user_df)
+    specific_collection_craft = get_specific_collection_craft(user_df)
+    specific_category_craft = get_specific_category_craft(user_df)
+    all_specific_craft = get_all_cpecific_craft(user_df)
+    result = {
+        'all_random_craft': all_random_craft,
+        'specific_collection_craft': specific_collection_craft,
+        'specific_category_craft': specific_category_craft,
+        'all_specific_craft': all_specific_craft,
+    }
+    return result

@@ -10,15 +10,6 @@
     <h1>Новогодний калькулятор</h1>
     {% include 'calc/includes/switcher.html' %}
     {% if user.is_authenticated %}
-      {% if view_name == 'calc:national' %}
-        <h3>Отечественная коллекция</h3>
-      {% elif view_name == 'calc:christmas' %}
-        <h3>Рождественская коллекция</h3>
-      {% elif view_name == 'calc:eastern' %}
-        <h3>Восточная коллекция</h3>
-      {% elif view_name == 'calc:magic' %}
-        <h3>Сказочная коллекция</h3>
-      {% endif %}
       <div class="container py-5">
         <form method="post">
           {% csrf_token %}

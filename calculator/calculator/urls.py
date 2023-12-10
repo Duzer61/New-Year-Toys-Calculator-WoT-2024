@@ -7,4 +7,9 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
     path('', include('calc.urls', namespace='calc')),
     path('captcha/', include('captcha.urls')),
+    path(
+        'recommendations/', include(
+            'recommendations.urls', namespace='recommendations'
+        )
+    ),
 ]
