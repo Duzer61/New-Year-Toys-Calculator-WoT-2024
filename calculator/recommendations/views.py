@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from mongodb.mongo_init import results
 
 
+@login_required
 def recommendations(request):
     """Выводит шаблон страницы рекомендаций."""
     username = request.user.username

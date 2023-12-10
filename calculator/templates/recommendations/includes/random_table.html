@@ -8,9 +8,10 @@
       <caption>
         Вероятность крафта игрушки 5 лвл. в случайной коллекции и случайной
         категории. И ожидаемое количество осколков которые в среднем понадобятся
-        для такого крафта. В большинстве случаев именно случайный крафт самый
-        выгодный с точки зрения расхода осколков. Но рандом есть рандом - может
-        и не повезти.
+        для такого крафта. <strong>В большинстве случаев именно случайный крафт самый
+        выгодный с точки зрения расхода осколков,</strong> т.к. он самый дешевый и разбивая
+        неудачный дубликат игрушки, вы возвращаете большую часть осколков.
+        Но рандом есть рандом - может и не повезти.
       </caption>
       <thead>
         <tr>
@@ -20,13 +21,13 @@
       </thead>
         <tr>
           <td class="table-warning">
-            {{ user_result.all_random_craft.chance|floatformat:2 }}
+            {{ user_result.all_random_craft.chance|floatformat:0 }}
           </td>
           <td class="table-warning">
-            {% if user_result.all_random_craft.average_fragments_num|floatformat:2 == 'inf' %}
+            {% if user_result.all_random_craft.average_fragments_num|floatformat:0 == 'inf' %}
               Собран весь 5 лвл. Поздравляю!
             {% else %}
-              {{ user_result.all_random_craft.average_fragments_num|floatformat:2 }}
+              {{ user_result.all_random_craft.average_fragments_num|floatformat:0 }}
             {% endif %}
           </td>
         </tr>

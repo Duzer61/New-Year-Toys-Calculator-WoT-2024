@@ -15,8 +15,7 @@ def save_user_result(username, result, advice, advice_2):
             'result': result,
             'advice': advice,
             'advice_2': advice_2
-            }
-        },
+            }},
         upsert=True
     )
 
