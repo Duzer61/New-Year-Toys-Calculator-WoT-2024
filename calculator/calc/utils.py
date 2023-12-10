@@ -1,6 +1,7 @@
 from mongodb.initial_data import COLLECTION_DATA
 from mongodb.mongo_init import results, toys
 from mongodb.views import add_new_user_collection
+from recommendations.utils import get_advice
 
 from .main_calc import main_calc
 
@@ -27,9 +28,10 @@ def form_handler(request, form, username, collection_name):
             {'$set': {collection_full_name: forms_data}}
         )
         if 'calculate' in request.POST:  # Если нажата кнопка "Рассчитать"
-            result = main_calc(username)
-            print(result)
-            save_user_result(username, result)
+            tables_data, min_data = main_calc(username)
+            # print(tables_data)
+            advice = get_advice(min_data)
+            save_user_result(username, tables_data)
             is_calc = True
     user_data = toys.find_one(
         {'username': username},

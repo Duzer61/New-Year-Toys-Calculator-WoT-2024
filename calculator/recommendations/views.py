@@ -9,5 +9,5 @@ def recommendations(request):
     username = request.user.username
     user_result = results.find_one({'username': username})['result']
     context = {'user_result': user_result}
-    print(context)
+    # print(context)
     return render(request, 'recommendations/recommendations.html', context)
