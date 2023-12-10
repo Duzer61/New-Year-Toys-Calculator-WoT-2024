@@ -1,6 +1,9 @@
 import numpy as np
 from calc.constants import ANTIPOVTORITEL_CRAFT
 
+UNCERT_COEF = 0.75  # Коэффициент неопределенности. Обозначает при какой разнице
+# значений можно рассмотреть и другой вариант
+
 # Заготовки сообщений для рекомендаций
 anti_povtoritel_definitely = 'Однозначно пора использовать антиповторитель!'
 anti_povtoritel_maybe = (
@@ -8,6 +11,17 @@ anti_povtoritel_maybe = (
     'Но, кажется уже лучше подстраховаться и крафтить с ним.'
 )
 congratulations = 'Все коллекции 5 лвл. собраны. Поздравляю!'
+all_random_definitely = (
+    'Выгоднее крафтить в случайной коллекции и случайной категории. '
+    'Это может занять больше попыток, но все-равно ожидаемая трата '
+    'осколков будет меньше. Не забывайте разбивать ненужные игрушки.'
+)
+all_random_maybe = (
+    'Чисто математически выгоднее крафтить в случайной коллекции и случайной '
+    'категории. Это может занять больше попыток, но все-равно ожидаемая трата '
+    'осколков меньше. Как вариант можно воспользоваться советом ниже. '
+    'Может потратится больше осколков, но попыток будет меньше.'
+)
 
 
 def anti_povtoritel_check(value):
@@ -18,10 +32,22 @@ def anti_povtoritel_check(value):
         message = congratulations
     elif value >= ANTIPOVTORITEL_CRAFT:
         message = anti_povtoritel_definitely
-    elif value >= ANTIPOVTORITEL_CRAFT * 0.75:
+    elif value >= ANTIPOVTORITEL_CRAFT * UNCERT_COEF:
         message = anti_povtoritel_maybe
     return message
 
+
+def all_random_check(name, value, value_2):
+    """Проверяет на целесообразность полностью случайного крафта."""
+
+    message = ''
+    is_definitely = False  # Флаг, на однозначную целесообразность
+    if name == 'all_random_min' and value_2 * UNCERT_COEF <= value:
+        message = all_random_maybe
+    elif name == 'all_random_min':
+        message = all_random_definitely
+        is_definitely = True
+    return message, is_definitely
 
 
 def get_advice(min_data):
@@ -42,7 +68,11 @@ def get_advice(min_data):
     min_name_3, min_value_3 = min_values[2][0], min_values[2][1]
     rec_message = ''  # сообщение с рекомендацией крафта
     message = anti_povtoritel_check(min_value)
-    if not message:
-        print('Рекомендации нет')
-    else:
-        print(message)
+    message_2 = ''
+    if message:  # если есть рекомендации с анитповторителем, то возвращаем их
+        return message, message_2
+    message, is_definitely = all_random_check(min_name, min_value, min_value_2)
+    if message and is_definitely:
+        return message, message_2
+    message_2 = ' А дальше пока не накодил...'
+    return message, message_2

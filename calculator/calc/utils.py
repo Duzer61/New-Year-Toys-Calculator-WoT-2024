@@ -6,12 +6,17 @@ from recommendations.utils import get_advice
 from .main_calc import main_calc
 
 
-def save_user_result(username, result):
+def save_user_result(username, result, advice, advice_2):
     """Сохраняет данные о рассчетах пользователя."""
 
     results.update_one(
         {'username': username},
-        {'$set': {'result': result}},
+        {'$set': {
+            'result': result,
+            'advice': advice,
+            'advice_2': advice_2
+            }
+        },
         upsert=True
     )
 
@@ -30,8 +35,9 @@ def form_handler(request, form, username, collection_name):
         if 'calculate' in request.POST:  # Если нажата кнопка "Рассчитать"
             tables_data, min_data = main_calc(username)
             # print(tables_data)
-            advice = get_advice(min_data)
-            save_user_result(username, tables_data)
+            advice, advice_2 = get_advice(min_data)
+            save_user_result(username, tables_data, advice, advice_2)
+
             is_calc = True
     user_data = toys.find_one(
         {'username': username},
