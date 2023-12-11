@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -10,8 +13,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jx6c^4l=!%(1g%q9!11!&ef624+y=kfw0&)!a5a@+%m68^!5jx'
-
+SECRET_KEY = os.getenv('DJANGO_KEY', 'django-insecure')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
