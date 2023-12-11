@@ -7,10 +7,14 @@
 {% block content %}
 {% load user_filters %}
 <div class="container py-5 col-md-6">
-  <div class="p-3">
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+    <label class="form-check-label" for="flexSwitchCheckChecked">Включить/отключить таблицы</label>
+  </div>
+  <div class="p-3 toggle-table">
     {% include 'recommendations/includes/chance_table.html' %}
   </div>
-  <div class="p-3">
+  <div class="p-3 toggle-table">
     {% include 'recommendations/includes/fragments_table.html' %}
   </div>
   <div class="p-3">

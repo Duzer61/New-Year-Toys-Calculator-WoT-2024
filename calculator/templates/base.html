@@ -26,5 +26,17 @@
       {% endblock %}
     </main>
     {% include 'includes/footer.html' %} 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#flexSwitchCheckChecked').on('change', function () {
+          if ($(this).is(':checked')) {
+            $('.toggle-table').show();
+          } else {
+            $('.toggle-table').hide();
+          }
+        });
+      });
+    </script>
   </body>
 </html> 

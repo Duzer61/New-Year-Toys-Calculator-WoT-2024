@@ -239,12 +239,15 @@ def main_calc(username):
         get_specific_category_craft(user_df)
     )
     all_specific_craft, all_min = get_all_cpecific_craft(user_df)
+    # данные для таблиц
     tables_data = {
         'all_random_craft': all_random_craft,
         'specific_collection_craft': specific_collection_craft,
         'specific_category_craft': specific_category_craft,
         'all_specific_craft': all_specific_craft,
     }
+    # данные по минимальному количеству осколков для крафта
+    # в разных коллекциях/категориях
     min_data = {
         'all_random_min': all_random_craft['average_fragments_num'],
         'collect_min': collect_min,
