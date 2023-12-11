@@ -4,10 +4,6 @@ from django.shortcuts import redirect, render
 from .forms import ToysForm
 from .utils import form_handler
 
-# from mongodb.initial_data import COLLECTION_DATA
-# from mongodb.mongo_init import toys
-# from mongodb.views import add_new_user_collection
-
 
 def index(request):
     """Выводит шаблон главной страницы."""
