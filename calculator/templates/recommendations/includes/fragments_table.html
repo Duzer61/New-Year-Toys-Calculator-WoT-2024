@@ -28,20 +28,20 @@
             {% for key, value in values.items %}
               {% if key == 'hanging' %}
               <td>
-                {% if value|floatformat:2 == 'inf' %}
+                {% if value|floatformat:0 == 'inf' %}
                   собрано
                 {% else %}
-                  {{ value|floatformat:2 }}
+                  {{ value|floatformat:0 }}
                 {% endif %}
               </td>
               {% endif %}
             {% endfor %}
           {% endfor %}
           <td class="table-warning">
-            {% if user_result.specific_category_craft.average_fragments_num.hanging|floatformat:2 == 'inf' %}
+            {% if user_result.specific_category_craft.average_fragments_num.hanging|floatformat:0 == 'inf' %}
               собрано
             {% else %}
-              {{ user_result.specific_category_craft.average_fragments_num.hanging|floatformat:2 }}
+              {{ user_result.specific_category_craft.average_fragments_num.hanging|floatformat:0 }}
             {% endif %}
           </td>
         </tr>
@@ -51,20 +51,20 @@
             {% for key, value in values.items %}
               {% if key == 'crown' %}
               <td>
-                {% if value|floatformat:2 == 'inf' %}
+                {% if value|floatformat:0 == 'inf' %}
                   собрано
                 {% else %}
-                  {{ value|floatformat:2 }}
+                  {{ value|floatformat:0 }}
                 {% endif %}
               </td>
               {% endif %}
             {% endfor %}
           {% endfor %}
           <td class="table-warning">
-            {% if user_result.specific_category_craft.average_fragments_num.crown|floatformat:2 == 'inf' %}
+            {% if user_result.specific_category_craft.average_fragments_num.crown|floatformat:0 == 'inf' %}
               собрано
             {% else %}
-              {{ user_result.specific_category_craft.average_fragments_num.crown|floatformat:2 }}
+              {{ user_result.specific_category_craft.average_fragments_num.crown|floatformat:0 }}
             {% endif %}
           </td>
         </tr>
@@ -74,20 +74,20 @@
             {% for key, value in values.items %}
               {% if key == 'gift' %}
               <td>
-                {% if value|floatformat:2 == 'inf' %}
+                {% if value|floatformat:0 == 'inf' %}
                   собрано
                 {% else %}
-                  {{ value|floatformat:2 }}
+                  {{ value|floatformat:0 }}
                 {% endif %}
               </td>
               {% endif %}
             {% endfor %}
           {% endfor %}
           <td class="table-warning">
-            {% if user_result.specific_category_craft.average_fragments_num.gift|floatformat:2 == 'inf' %}
+            {% if user_result.specific_category_craft.average_fragments_num.gift|floatformat:0 == 'inf' %}
               собрано
             {% else %}
-              {{ user_result.specific_category_craft.average_fragments_num.gift|floatformat:2 }}
+              {{ user_result.specific_category_craft.average_fragments_num.gift|floatformat:0 }}
             {% endif %}
           </td>
         </tr>
@@ -97,20 +97,20 @@
               {% for key, value in values.items %}
                 {% if key == 'garland' %}
                 <td>
-                  {% if value|floatformat:2 == 'inf' %}
+                  {% if value|floatformat:0 == 'inf' %}
                     собрано
                   {% else %}
-                    {{ value|floatformat:2 }}
+                    {{ value|floatformat:0 }}
                   {% endif %}
                 </td>
                 {% endif %}
               {% endfor %}
             {% endfor %}
           <td class="table-warning">
-            {% if user_result.specific_category_craft.average_fragments_num.garland|floatformat:2 == 'inf' %}
+            {% if user_result.specific_category_craft.average_fragments_num.garland|floatformat:0 == 'inf' %}
               собрано
             {% else %}
-              {{ user_result.specific_category_craft.average_fragments_num.garland|floatformat:2 }}
+              {{ user_result.specific_category_craft.average_fragments_num.garland|floatformat:0 }}
             {% endif %}
           </td>
         </tr>
@@ -118,10 +118,10 @@
           <th scope="row" class="table-warning">Все категории</th>
           {% for key, value in user_result.specific_collection_craft.average_fragments_num.items %}
             <td class="table-warning">
-              {% if value|floatformat:2 == 'inf' %}
+              {% if value|floatformat:0 == 'inf' %}
                 собрано
               {% else %}
-                {{ value|floatformat:2 }}
+                {{ value|floatformat:0 }}
               {% endif %}
             </td>
           {% endfor %}

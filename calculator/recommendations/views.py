@@ -4,10 +4,18 @@ from django.shortcuts import redirect, render
 from mongodb.mongo_init import results
 
 
+@login_required
 def recommendations(request):
     """Выводит шаблон страницы рекомендаций."""
     username = request.user.username
-    user_result = results.find_one({'username': username})['result']
-    context = {'user_result': user_result}
-    print(context)
+    result = results.find_one({'username': username})
+    user_result = result.get('result')
+    user_advice = result.get('advice')
+    user_advice_2 = result.get('advice_2')
+    context = {
+        'user_result': user_result,
+        'user_advice': user_advice,
+        'user_advice_2': user_advice_2,
+    }
+    # print(context)
     return render(request, 'recommendations/recommendations.html', context)
