@@ -20,7 +20,7 @@ ALLOWED_HOSTS = [
 # DEBUG = os.getenv('DEBUG', default=True)
 DEBUG = True
 
-CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+# CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 # Application definition
 
 INSTALLED_APPS = [
