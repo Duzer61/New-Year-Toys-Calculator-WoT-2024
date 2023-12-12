@@ -14,16 +14,11 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '[::1]',
-    'calculator',
-    'national',
-    'eastern',
-    'magic',
-    'christmas',
+    'calculator'
     ]
 
 # DEBUG = os.getenv('DEBUG', default=True)
-DEBUG = False
-
+DEBUG = True
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 # Application definition
