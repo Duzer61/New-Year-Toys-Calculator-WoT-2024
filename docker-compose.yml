@@ -2,9 +2,10 @@ version: '3.3'
 
 volumes:
   pg_data:
-  static:
+  static_volume:
   media:
   mongo_data:
+
 
 services:
 
@@ -21,20 +22,20 @@ services:
     volumes:
       - mongo_data:/data/db
   calculator:
-    container_name: calculator_backend
     build: ./calculator/
     env_file: .env
     depends_on:
       - db_django
       - db_mongo
     volumes:
-      - static:/calculator_static
+      - static_volume:/staticfiles
       - media:/media
   nginx:
-    container_name: calculator_nginx
     build: ./nginx/
+    depends_on:
+      - calculator
     volumes:
-      - static:/staticfiles/
+      - static_volume:/staticfiles
       - media:/media
     ports:
-      - 9000:80 
+      - 8000:80

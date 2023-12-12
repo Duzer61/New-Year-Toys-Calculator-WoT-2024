@@ -7,13 +7,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
 SECRET_KEY = os.getenv('DJANGO_KEY', 'django-insecure')
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", '127.0.0.1').split(', ')
+# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", '127.0.0.1').split(', ')
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'calculator',
+    'national',
+    'eastern',
+    'magic',
+    'christmas',
+    ]
 
-DEBUG = os.getenv('DEBUG', default=True)
+# DEBUG = os.getenv('DEBUG', default=True)
+DEBUG = False
 
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
@@ -81,7 +90,7 @@ WSGI_APPLICATION = 'calculator.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'django'),
         'USER': os.getenv('POSTGRES_USER', 'django'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
@@ -128,7 +137,7 @@ LOGIN_REDIRECT_URL = 'calc:national'
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'collected_static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media'
 
