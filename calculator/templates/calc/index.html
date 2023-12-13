@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Новогодний калькулятор
+Новогодний калькулятор (бета-версия)
 {% endblock %}
 
 {% block content %}
 {% load user_filters %}
-<div class="container py-5 col-md-6">     
-  <h1>Новогодний калькулятор</h1>
+<div class="container py-5 col-md-6">
+  <h2 class="text-primary font-weight-bold mt-4 mb-4">
+    Новогодний калькулятор для коллайдера
+  </h2>
   {% include 'calc/includes/switcher.html' %}
   <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
   <a href="{% url 'users:signup' %}" class="btn btn-secondary">Зарегистрироваться</a>
-{% endblock %}
+  <h6 class="text-muted mt-4 mb-4">
+    Регистрация нужна только для того, чтобы сохранять результаты.
+  </h6>
+  {% endblock %}

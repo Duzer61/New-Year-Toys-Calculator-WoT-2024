@@ -1,5 +1,5 @@
 from .initial_data import INITIAL_DATA
-from .mongo_init import results, toys
+from .mongo_init import toys
 
 
 def add_new_user_collection(username):

@@ -1,0 +1,6 @@
+# Файл .dockerignore
+venv
+.git
+.idea
+.vscode
+.env

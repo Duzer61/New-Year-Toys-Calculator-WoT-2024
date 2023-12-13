@@ -108,7 +108,6 @@ def all_check(name, name_2, min_data):
 def get_advice(min_data):
     """Возвращает рекомендации по крафту."""
 
-    print(f'min_data: {min_data}')  # для отладки, удалить позже. min_data: {min_data)
     # минимальные значения осколков по разным способам крафта
     min_values = {
         'all_random_min': min_data['all_random_min'],

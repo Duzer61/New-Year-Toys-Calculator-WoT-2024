@@ -33,7 +33,6 @@ def form_handler(request, form, username, collection_name):
         )
         if 'calculate' in request.POST:  # Если нажата кнопка "Рассчитать"
             tables_data, min_data = main_calc(username)
-            # print(tables_data)
             advice, advice_2 = get_advice(min_data)
             save_user_result(username, tables_data, advice, advice_2)
 

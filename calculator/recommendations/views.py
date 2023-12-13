@@ -1,6 +1,5 @@
-from calc.main_calc import pd
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from mongodb.mongo_init import results
 
 
@@ -17,5 +16,4 @@ def recommendations(request):
         'user_advice': user_advice,
         'user_advice_2': user_advice_2,
     }
-    # print(context)
     return render(request, 'recommendations/recommendations.html', context)
