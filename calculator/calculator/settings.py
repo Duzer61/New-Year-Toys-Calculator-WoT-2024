@@ -143,3 +143,6 @@ CAPTCHA_NOISE_FUNCTIONS = [
     'captcha.helpers.noise_dots',
     'captcha.helpers.noise_arcs',
 ]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
