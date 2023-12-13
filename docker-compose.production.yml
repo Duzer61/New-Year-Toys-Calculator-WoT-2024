@@ -1,0 +1,41 @@
+version: '3.3'
+
+volumes:
+  pg_data:
+  static_volume:
+  media:
+  mongo_data:
+
+
+services:
+
+  db_django:
+    container_name: calculator_db_django
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  db_mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+  calculator:
+    image: duzer61/calculator
+    env_file: .env
+    depends_on:
+      - db_django
+      - db_mongo
+    volumes:
+      - static_volume:/staticfiles
+      - media:/media
+  nginx:
+    image: duzer61/calculator_nginx
+    depends_on:
+      - calculator
+    volumes:
+      - static_volume:/staticfiles
+      - media:/media
+    ports:
+      - 9000:80
