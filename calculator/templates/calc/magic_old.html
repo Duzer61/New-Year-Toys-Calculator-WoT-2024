@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Новогодний калькулятор
+{% endblock %}
+
+{% block content %}
+{% load user_filters %}
+  <div class="container py-5 col-md-6">
+    <h1>Новогодний калькулятор</h1>
+    {% include 'calc/includes/switcher.html' %}
+    <h3>Сказочная коллекция</h3>
+  </div>
+{% endblock %}

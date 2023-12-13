@@ -1,0 +1,21 @@
+{% if user.is_authenticated %}
+  <div>
+    <h5 class="text-primary">
+      Рекомендации по крафту. <span class="text-muted"
+      style="font-size: smaller;">Внимание! Это лишь рекомендации
+        с точки зрения теории вероятностей. Они не гарантируют успешного
+        крафта. Но при большом числе попыток это оптимальный способ.
+        Вы всегда можете свериться с таблицами ниже.</span>
+    </h5
+    <div>
+        <h4 class="my-3" style="color: #1c5e20;">
+          {{ user_advice }}
+        </h4>
+    </div>
+    <div>
+        <h4 class="text-success">
+          {{ user_advice_2 }}
+        </h4>
+    </div>
+  </div>
+{% endif %}
