@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ToysForm
 from .utils import form_handler
@@ -13,7 +13,7 @@ def index(request):
     return render(request, 'calc/index.html')
 
 
-@csrf_protect
+@csrf_exempt
 @login_required
 def national(request):
     """Выводит шаблон страницы отечественной коллекции."""
@@ -27,7 +27,7 @@ def national(request):
     return render(request, 'calc/collections.html', context)
 
 
-@csrf_protect
+@csrf_exempt
 @login_required
 def christmas(request):
     """Выводит шаблон страницы рождественской коллекции."""
@@ -41,7 +41,7 @@ def christmas(request):
     return render(request, 'calc/collections.html', context)
 
 
-@csrf_protect
+@csrf_exempt
 @login_required
 def eastern(request):
     """Выводит шаблон страницы восточной коллекции."""
@@ -55,7 +55,7 @@ def eastern(request):
     return render(request, 'calc/collections.html', context)
 
 
-@csrf_protect
+@csrf_exempt
 @login_required
 def magic(request):
     """Выводит шаблон страницы сказочной коллекции."""
