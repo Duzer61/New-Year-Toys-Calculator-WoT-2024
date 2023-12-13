@@ -1,26 +1,20 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+env = environ.Env()
+environ.Env.read_env()
 
-SECRET_KEY = os.getenv('DJANGO_KEY', 'django-insecure')
+SECRET_KEY = env('DJANGO_KEY', default='django-insecure')
 
-# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", '127.0.0.1').split(', ')
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-    'calculator'
-    ]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['127.0.0.1'])
 
-# DEBUG = os.getenv('DEBUG', default=True)
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=True)
 
-# CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 # Application definition
 
 INSTALLED_APPS = [
@@ -72,25 +66,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'calculator.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT', 5432)
+        'NAME': env('POSTGRES_DB', default='django'),
+        'USER': env('POSTGRES_USER', default='django'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default=''),
+        'HOST': env('DB_HOST', default=''),
+        'PORT': env('DB_PORT', default=5432)
     }
 }
 
