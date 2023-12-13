@@ -66,14 +66,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'calculator.wsgi.application'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('POSTGRES_DB', default='django'),
+#         'USER': env('POSTGRES_USER', default='django'),
+#         'PASSWORD': env('POSTGRES_PASSWORD', default=''),
+#         'HOST': env('DB_HOST', default=''),
+#         'PORT': env('DB_PORT', default=5432)
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB', default='django'),
-        'USER': env('POSTGRES_USER', default='django'),
-        'PASSWORD': env('POSTGRES_PASSWORD', default=''),
-        'HOST': env('DB_HOST', default=''),
-        'PORT': env('DB_PORT', default=5432)
+        'NAME': os.environ.get('POSTGRES_DB', 'django'),
+        'USER': os.environ.get('POSTGRES_USER', 'django'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', 5432),
     }
 }
 
