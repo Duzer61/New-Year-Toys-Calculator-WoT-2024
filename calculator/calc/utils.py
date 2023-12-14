@@ -26,11 +26,12 @@ def form_handler(request, form, username, collection_name):
     is_calc = False  # Флаг, если производился рассчет
     collection_full_name = 'collection.' + collection_name
     if form.is_valid():
-        forms_data = form.cleaned_data
-        toys.update_one(
-            {'username': username},
-            {'$set': {collection_full_name: forms_data}}
-        )
+        if 'save' in request.POST:
+            forms_data = form.cleaned_data
+            toys.update_one(
+                {'username': username},
+                {'$set': {collection_full_name: forms_data}}
+            )
         if 'calculate' in request.POST:  # Если нажата кнопка "Рассчитать"
             tables_data, min_data = main_calc(username)
             advice, advice_2 = get_advice(min_data)

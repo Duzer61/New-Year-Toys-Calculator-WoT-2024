@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Новогодний калькулятор
+Новогодний калькулятор
 {% endblock %}
 
 {% block content %}
@@ -18,6 +18,9 @@
   </div>
   <div class="container py-5 col-md-6">
     {% include 'recommendations/includes/fragments_table.html' %}
+    <div class="d-flex justify-content-center">
+      <a href='{% url "calc:index" %}' class="btn btn-primary">К коллекциям</a>
+    </div>
   </div>
 </div>
 {% endblock %}

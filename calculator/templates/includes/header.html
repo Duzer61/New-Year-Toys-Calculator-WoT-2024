@@ -9,10 +9,14 @@
       </a>
       <ul class="nav nav-pills">
         {% if request.user.is_authenticated %}
-        <li class="nav-item"> 
+        {% if view_name == 'recommendations:recommendations' %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'calc:index' %}">На главную</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
           <a class="nav-link link-light
-            {% if view_name == 'users:logout' %}active{% endif %}"
-            href="{% url 'users:logout' %}">
+            {% if view_name == 'users:logout' %}active{% endif %}" href="{% url 'users:logout' %}">
             Выйти
           </a>
         </li>
@@ -20,23 +24,21 @@
           Пользователь: {{ user.username }}
         </li>
         {% else %}
-        <li class="nav-item"> 
+        <li class="nav-item">
           <a class="nav-link link-light
-            {% if view_name == 'users:login' %}active{% endif %}"
-            href="{% url 'users:login' %}">
+            {% if view_name == 'users:login' %}active{% endif %}" href="{% url 'users:login' %}">
             Войти
           </a>
         </li>
-        <li class="nav-item"> 
+        <li class="nav-item">
           <a class="nav-link link-light
-            {% if view_name == 'users:signup' %}active{% endif %}"
-            href="{% url 'users:signup' %}">
+            {% if view_name == 'users:signup' %}active{% endif %}" href="{% url 'users:signup' %}">
             Регистрация
           </a>
         </li>
         {% endif %}
       </ul>
     </div>
-  </nav>      
+  </nav>
 </header>
 {% endwith %}
