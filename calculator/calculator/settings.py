@@ -14,7 +14,7 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['127.0.0.1'])
 
 DEBUG = env.bool('DEBUG', default=True)
 
-# CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 # Application definition
 
 INSTALLED_APPS = [
@@ -147,4 +147,4 @@ CAPTCHA_NOISE_FUNCTIONS = [
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-CSRF_TRUSTED_ORIGINS = ['collider.hopto.org']
+CSRF_TRUSTED_ORIGINS = ['http://collider.hopto.org', 'https://collider.hopto.org']
