@@ -26,7 +26,7 @@ def form_handler(request, form, username, collection_name):
     is_calc = False  # Флаг, если производился рассчет
     collection_full_name = 'collection.' + collection_name
     if form.is_valid():
-        if 'save' in request.POST:
+        if 'save' in request.POST or 'calculate' in request.POST:
             forms_data = form.cleaned_data
             toys.update_one(
                 {'username': username},
