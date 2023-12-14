@@ -14,14 +14,14 @@ def add_new_user_collection(username):
             'collection': INITIAL_DATA
         })
     else:
+        pass
         # Если пользователь был зарегистрирован раньше, но был удален
         # а теперь опять создается пользователь с таким именем, то обнуляем
         # его коллекцию игрушек
-        print(f'Обнуляем коллекцию для пользователя {username}')
-        toys.update_one(
-            {'username': username},
-            {'$set': {'collection': INITIAL_DATA}}
-        )
+        # toys.update_one(
+        #     {'username': username},
+        #     {'$set': {'collection': INITIAL_DATA}}
+        # )
 
 
 def main():
