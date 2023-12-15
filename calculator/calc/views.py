@@ -2,8 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import ToysForm
+from .forms import ChristmasForm, EasternForm, MagicForm, NationalForm
 from .utils import form_handler
+from .models import UserAlbums
 
 
 def index(request):
@@ -18,12 +19,14 @@ def index(request):
 def national(request):
     """Выводит шаблон страницы отечественной коллекции."""
 
-    username = request.user.username
-    form = ToysForm(request.POST or None)
-    user_data, is_calc = form_handler(request, form, username, 'national')
-    if is_calc:
-        return redirect('recommendations:recommendations')
-    context = {'user_data': user_data}
+    user = request.user
+    album = UserAlbums.objects.get_or_create(user=user)
+    form = NationalForm(request.POST or None, instance=album)
+    if form.is_valid():
+        form.save()
+        if 'calculate' in request.POST:
+            return redirect('recommendations:recommendations')
+    context = {'form': form}
     return render(request, 'calc/collections.html', context)
 
 
@@ -32,12 +35,14 @@ def national(request):
 def christmas(request):
     """Выводит шаблон страницы рождественской коллекции."""
 
-    username = request.user.username
-    form = ToysForm(request.POST or None)
-    user_data, is_calc = form_handler(request, form, username, 'christmas')
-    if is_calc:
-        return redirect('recommendations:recommendations')
-    context = {'user_data': user_data}
+    user = request.user
+    album = UserAlbums.objects.get_or_create(user=user)
+    form = ChristmasForm(request.POST or None, instance=album)
+    if form.is_valid():
+        form.save()
+        if 'calculate' in request.POST:
+            return redirect('recommendations:recommendations')
+    context = {'form': form}
     return render(request, 'calc/collections.html', context)
 
 
@@ -46,12 +51,14 @@ def christmas(request):
 def eastern(request):
     """Выводит шаблон страницы восточной коллекции."""
 
-    username = request.user.username
-    form = ToysForm(request.POST or None)
-    user_data, is_calc = form_handler(request, form, username, 'eastern')
-    if is_calc:
-        return redirect('recommendations:recommendations')
-    context = {'user_data': user_data}
+    user = request.user
+    album = UserAlbums.objects.get_or_create(user=user)
+    form = EasternForm(request.POST or None, instance=album)
+    if form.is_valid():
+        form.save()
+        if 'calculate' in request.POST:
+            return redirect('recommendations:recommendations')
+    context = {'form': form}
     return render(request, 'calc/collections.html', context)
 
 
@@ -60,10 +67,12 @@ def eastern(request):
 def magic(request):
     """Выводит шаблон страницы сказочной коллекции."""
 
-    username = request.user.username
-    form = ToysForm(request.POST or None)
-    user_data, is_calc = form_handler(request, form, username, 'magic')
-    if is_calc:
-        return redirect('recommendations:recommendations')
-    context = {'user_data': user_data}
+    user = request.user
+    album = UserAlbums.objects.get_or_create(user=user)
+    form = MagicForm(request.POST or None, instance=album)
+    if form.is_valid():
+        form.save()
+        if 'calculate' in request.POST:
+            return redirect('recommendations:recommendations')
+    context = {'form': form}
     return render(request, 'calc/collections.html', context)

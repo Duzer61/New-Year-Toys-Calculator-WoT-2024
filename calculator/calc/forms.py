@@ -1,6 +1,5 @@
 from django import forms
 from .models import UserAlbums
-from .constants import MAX_CROWN, MAX_GARLAND, MAX_GIFT, MAX_HANGING
 
 
 # class ToysForm(forms.Form):
@@ -20,16 +19,16 @@ class NationalForm(forms.Form):
     """
     Форма для записи альбома отечественных игрушек.
     """
-    national_hanging = forms.PositiveSmallIntegerField(
+    hanging = forms.PositiveSmallIntegerField(
         help_text=helps['hanging_text'],
     )
-    national_crown = forms.PositiveSmallIntegerField(
+    crown = forms.PositiveSmallIntegerField(
         help_text=helps['crown_text'],
     )
-    national_gift = forms.PositiveSmallIntegerField(
+    gift = forms.PositiveSmallIntegerField(
         help_text=helps['gift_text'],
     )
-    national_garland = forms.PositiveSmallIntegerField(
+    garland = forms.PositiveSmallIntegerField(
         help_text=helps['garland_text'],
     )
 
@@ -41,22 +40,28 @@ class NationalForm(forms.Form):
             'national_gift',
             'national_garland'
         ]
+        labels = {
+            'hanging': 'national_hanging',
+            'crown': 'national_crown',
+            'gift': 'national_gift',
+            'garland': 'national_garland'
+        }
 
 
 class EasternForm(forms.Form):
     """
     Форма для записи восточного альбома игрушек.
     """
-    eastern_hanging = forms.PositiveSmallIntegerField(
+    hanging = forms.PositiveSmallIntegerField(
         help_text=helps['hanging_text'],
     ),
-    eastern_crown = forms.PositiveSmallIntegerField(
+    crown = forms.PositiveSmallIntegerField(
         help_text=helps['crown_text'],
     ),
-    eastern_gift = forms.PositiveSmallIntegerField(
+    gift = forms.PositiveSmallIntegerField(
         help_text=helps['gift_text'],
     ),
-    eastern_garland = forms.PositiveSmallIntegerField(
+    garland = forms.PositiveSmallIntegerField(
         help_text=helps['garland_text'],
     )
 
@@ -68,22 +73,28 @@ class EasternForm(forms.Form):
             'eastern_gift',
             'eastern_garland'
         ]
+    labels = {
+        'hanging': 'eastern_hanging',
+        'crown': 'eastern_crown',
+        'gift': 'eastern_gift',
+        'garland': 'eastern_garland'
+    }
 
 
 class MagicForm(forms.Form):
     """
     Форма для записи сказочного альбома игрушек.
     """
-    magic_hanging = forms.PositiveSmallIntegerField(
+    hanging = forms.PositiveSmallIntegerField(
         help_text=helps['hanging_text'],
     ),
-    magic_crown = forms.PositiveSmallIntegerField(
+    crown = forms.PositiveSmallIntegerField(
         help_text=helps['crown_text'],
     ),
-    magic_gift = forms.PositiveSmallIntegerField(
+    gift = forms.PositiveSmallIntegerField(
         help_text=helps['gift_text'],
     ),
-    magic_garland = forms.PositiveSmallIntegerField(
+    garland = forms.PositiveSmallIntegerField(
         help_text=helps['garland_text'],
     )
 
@@ -95,22 +106,28 @@ class MagicForm(forms.Form):
             'magic_gift',
             'magic_garland'
         ]
+    labels = {
+        'hanging': 'magic_hanging',
+        'crown': 'magic_crown',
+        'gift': 'magic_gift',
+        'garland': 'magic_garland'
+    }
 
 
 class ChristmasForm(forms.Form):
     """
     Форма для записи Рождественского альбома.
     """
-    christmas_hanging = forms.PositiveSmallIntegerField(
+    hanging = forms.PositiveSmallIntegerField(
         help_text=helps['hanging_text'],
     ),
-    christmas_crown = forms.PositiveSmallIntegerField(
+    crown = forms.PositiveSmallIntegerField(
         help_text=helps['crown_text'],
     ),
-    christmas_gift = forms.PositiveSmallIntegerField(
+    gift = forms.PositiveSmallIntegerField(
         help_text=helps['gift_text'],
     ),
-    christmas_garland = forms.PositiveSmallIntegerField(
+    garland = forms.PositiveSmallIntegerField(
         help_text=helps['garland_text'],
     )
 
@@ -122,3 +139,9 @@ class ChristmasForm(forms.Form):
             'christmas_gift',
             'christmas_garland'
         ]
+    labels = {
+        'hanging': 'christmas_hanging',
+        'crown': 'christmas_crown',
+        'gift': 'christmas_gift',
+        'garland': 'christmas_garland'
+    }
