@@ -2,8 +2,6 @@ from captcha.fields import CaptchaField
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-# from tiny_db.views import add_new_user_collection
-from mongodb.views import add_new_user_collection
 
 from .forms import CreationForm
 
@@ -32,6 +30,4 @@ class SignUp(CreateView):
 
         response = super().form_valid(form)
         login(self.request, self.object)  # Войти в систему пользователем
-        username = self.object.username
-        # add_new_user_collection(username)
         return response

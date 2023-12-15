@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'calc.apps.CalcConfig',
-    'mongodb.apps.MongodbConfig',
     'recommendations.apps.RecommendationsConfig',
 ]
 
