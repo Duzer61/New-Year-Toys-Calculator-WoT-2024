@@ -5,7 +5,6 @@ from calc.constants import (ALL_RANDOM_CRAFT, ALL_SPECIFIC_CRAFT,
                             ONE_TOY_FRAGMENTS, TOTAL_TOYS)
 from calc.models import UserAlbums
 
-
 FULL_COLLECTION_DATA = {
     'hanging': MAX_HANGING,
     'crown': MAX_CROWN,
