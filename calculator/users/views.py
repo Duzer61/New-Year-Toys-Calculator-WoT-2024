@@ -33,5 +33,5 @@ class SignUp(CreateView):
         response = super().form_valid(form)
         login(self.request, self.object)  # Войти в систему пользователем
         username = self.object.username
-        add_new_user_collection(username)
+        # add_new_user_collection(username)
         return response

@@ -15,22 +15,10 @@ helps = {
 }
 
 
-class NationalForm(forms.Form):
+class NationalForm(forms.ModelForm):
     """
     Форма для записи альбома отечественных игрушек.
     """
-    hanging = forms.PositiveSmallIntegerField(
-        help_text=helps['hanging_text'],
-    )
-    crown = forms.PositiveSmallIntegerField(
-        help_text=helps['crown_text'],
-    )
-    gift = forms.PositiveSmallIntegerField(
-        help_text=helps['gift_text'],
-    )
-    garland = forms.PositiveSmallIntegerField(
-        help_text=helps['garland_text'],
-    )
 
     class Meta:
         model = UserAlbums
@@ -40,31 +28,12 @@ class NationalForm(forms.Form):
             'national_gift',
             'national_garland'
         ]
-        labels = {
-            'hanging': 'national_hanging',
-            'crown': 'national_crown',
-            'gift': 'national_gift',
-            'garland': 'national_garland'
-        }
 
 
-class EasternForm(forms.Form):
+class EasternForm(forms.ModelForm):
     """
     Форма для записи восточного альбома игрушек.
     """
-    hanging = forms.PositiveSmallIntegerField(
-        help_text=helps['hanging_text'],
-    ),
-    crown = forms.PositiveSmallIntegerField(
-        help_text=helps['crown_text'],
-    ),
-    gift = forms.PositiveSmallIntegerField(
-        help_text=helps['gift_text'],
-    ),
-    garland = forms.PositiveSmallIntegerField(
-        help_text=helps['garland_text'],
-    )
-
     class Meta:
         model = UserAlbums
         fields = [
@@ -73,30 +42,12 @@ class EasternForm(forms.Form):
             'eastern_gift',
             'eastern_garland'
         ]
-    labels = {
-        'hanging': 'eastern_hanging',
-        'crown': 'eastern_crown',
-        'gift': 'eastern_gift',
-        'garland': 'eastern_garland'
-    }
 
 
-class MagicForm(forms.Form):
+class MagicForm(forms.ModelForm):
     """
     Форма для записи сказочного альбома игрушек.
     """
-    hanging = forms.PositiveSmallIntegerField(
-        help_text=helps['hanging_text'],
-    ),
-    crown = forms.PositiveSmallIntegerField(
-        help_text=helps['crown_text'],
-    ),
-    gift = forms.PositiveSmallIntegerField(
-        help_text=helps['gift_text'],
-    ),
-    garland = forms.PositiveSmallIntegerField(
-        help_text=helps['garland_text'],
-    )
 
     class Meta:
         model = UserAlbums
@@ -106,30 +57,12 @@ class MagicForm(forms.Form):
             'magic_gift',
             'magic_garland'
         ]
-    labels = {
-        'hanging': 'magic_hanging',
-        'crown': 'magic_crown',
-        'gift': 'magic_gift',
-        'garland': 'magic_garland'
-    }
 
 
-class ChristmasForm(forms.Form):
+class ChristmasForm(forms.ModelForm):
     """
     Форма для записи Рождественского альбома.
     """
-    hanging = forms.PositiveSmallIntegerField(
-        help_text=helps['hanging_text'],
-    ),
-    crown = forms.PositiveSmallIntegerField(
-        help_text=helps['crown_text'],
-    ),
-    gift = forms.PositiveSmallIntegerField(
-        help_text=helps['gift_text'],
-    ),
-    garland = forms.PositiveSmallIntegerField(
-        help_text=helps['garland_text'],
-    )
 
     class Meta:
         model = UserAlbums
@@ -139,9 +72,3 @@ class ChristmasForm(forms.Form):
             'christmas_gift',
             'christmas_garland'
         ]
-    labels = {
-        'hanging': 'christmas_hanging',
-        'crown': 'christmas_crown',
-        'gift': 'christmas_gift',
-        'garland': 'christmas_garland'
-    }

@@ -20,7 +20,7 @@ def national(request):
     """Выводит шаблон страницы отечественной коллекции."""
 
     user = request.user
-    album = UserAlbums.objects.get_or_create(user=user)
+    album, created = UserAlbums.objects.get_or_create(user=user)
     form = NationalForm(request.POST or None, instance=album)
     if form.is_valid():
         form.save()
@@ -36,7 +36,7 @@ def christmas(request):
     """Выводит шаблон страницы рождественской коллекции."""
 
     user = request.user
-    album = UserAlbums.objects.get_or_create(user=user)
+    album, created = UserAlbums.objects.get_or_create(user=user)
     form = ChristmasForm(request.POST or None, instance=album)
     if form.is_valid():
         form.save()
@@ -52,7 +52,7 @@ def eastern(request):
     """Выводит шаблон страницы восточной коллекции."""
 
     user = request.user
-    album = UserAlbums.objects.get_or_create(user=user)
+    album, created = UserAlbums.objects.get_or_create(user=user)
     form = EasternForm(request.POST or None, instance=album)
     if form.is_valid():
         form.save()
@@ -68,7 +68,7 @@ def magic(request):
     """Выводит шаблон страницы сказочной коллекции."""
 
     user = request.user
-    album = UserAlbums.objects.get_or_create(user=user)
+    album, created = UserAlbums.objects.get_or_create(user=user)
     form = MagicForm(request.POST or None, instance=album)
     if form.is_valid():
         form.save()
