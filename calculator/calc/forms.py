@@ -2,19 +2,6 @@ from django import forms
 from .models import UserAlbums
 
 
-# class ToysForm(forms.Form):
-#     hanging = forms.IntegerField(min_value=0, max_value=MAX_HANGING)
-#     crown = forms.IntegerField(min_value=0, max_value=MAX_CROWN)
-#     gift = forms.IntegerField(min_value=0, max_value=MAX_GIFT)
-#     garland = forms.IntegerField(min_value=0, max_value=MAX_GARLAND)
-helps = {
-    'hanging_text': "Количество подвесных игрушек",
-    'crown_text': "Количество наверший",
-    'gift_text': "Количество подарков",
-    'garland_text': "Количество гирлянд",
-}
-
-
 class NationalForm(forms.ModelForm):
     """
     Форма для записи альбома отечественных игрушек.
