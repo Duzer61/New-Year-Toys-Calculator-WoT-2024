@@ -19,7 +19,11 @@
   <div class="container py-5 col-md-6">
     {% include 'recommendations/includes/fragments_table.html' %}
     <div class="d-flex justify-content-center">
-      <a href='{% url "calc:index" %}' class="btn btn-primary">К коллекциям</a>
+      {% if request.META.HTTP_REFERER == none %}
+      <a href="{% url 'calc:national' %}" class="btn btn-primary">К коллекциям</a>
+      {% else %}
+      <a href="{{ request.META.HTTP_REFERER}}" class="btn btn-primary">К коллекциям</a>
+      {% endif %}
     </div>
   </div>
 </div>

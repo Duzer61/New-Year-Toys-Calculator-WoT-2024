@@ -3,7 +3,7 @@ from mongodb.mongo_init import results, toys
 from mongodb.views import add_new_user_collection
 from recommendations.utils import get_advice
 
-from .main_calc import main_calc
+from ..recommendations.main_calc import main_calc
 
 
 def save_user_result(username, result, advice, advice_2):

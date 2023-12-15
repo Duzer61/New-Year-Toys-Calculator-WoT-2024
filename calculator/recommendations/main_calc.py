@@ -1,10 +1,10 @@
 import pandas as pd
+from calc.constants import (ALL_RANDOM_CRAFT, ALL_SPECIFIC_CRAFT,
+                            HALF_SPECIFIC_CRAFT, MAX_CROWN, MAX_GARLAND,
+                            MAX_GIFT, MAX_HANGING, MAX_TOYS_IN_COLLECTION,
+                            ONE_TOY_FRAGMENTS, TOTAL_TOYS)
+from calc.models import UserAlbums
 
-from .constants import (ALL_RANDOM_CRAFT, ALL_SPECIFIC_CRAFT,
-                        HALF_SPECIFIC_CRAFT, MAX_CROWN, MAX_GARLAND, MAX_GIFT,
-                        MAX_HANGING, MAX_TOYS_IN_COLLECTION, ONE_TOY_FRAGMENTS,
-                        TOTAL_TOYS)
-from .utils import toys
 
 FULL_COLLECTION_DATA = {
     'hanging': MAX_HANGING,
@@ -23,12 +23,21 @@ full_df = pd.DataFrame(
 )
 
 
-def get_user_collection(username):
-    """Извлекает из бд и возвращает коллекции пользователя."""
-    user_collection = toys.find_one(
-        {'username': username},
-    )['collection']
-    return user_collection
+def get_user_df(album):
+    """
+    Возвращает DataFrame pandas для коллекции пользователя.
+    """
+
+    albums = ['national', 'eastern', 'magic', 'christmas']
+    items = ['hanging', 'crown', 'gift', 'garland']
+    album_data = {}
+    for album_type in albums:
+        album_data[album_type] = {}
+        for item in items:
+            element_name = f'{album_type}_{item}'
+            album_data[album_type][item] = getattr(album, element_name)
+    user_df = pd.DataFrame(album_data)
+    return user_df
 
 
 def get_min_data(average_fragments_num):
@@ -157,15 +166,17 @@ def get_all_cpecific_craft(user_df):
     return data, min_data
 
 
-def main_calc(username):
+def main_calc(user_id):
     """
     Считает вероятности удачного крафта по колекциям
     и категориям и количество осколков, которое в среднем
     необходимо потратить на крафт игрушки. Возвращает
     результаты в виде словаря.
     """
-    user_collection = get_user_collection(username)
-    user_df = pd.DataFrame(user_collection)
+    album = UserAlbums.objects.get(user_id=user_id)
+    user_df = get_user_df(album)
+    print(f'user_df: \n{user_df}')
+
     all_random_craft = get_all_random_craft(user_df)
     specific_collection_craft, collect_min = (
         get_specific_collection_craft(user_df)
