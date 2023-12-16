@@ -69,8 +69,7 @@ def get_all_random_craft(user_df):
     average_attempts_num = 100 / chance
     # Среднее количество осколков на крафт
     average_fragments_num = (
-        (average_attempts_num - 1) * (ALL_RANDOM_CRAFT - ONE_TOY_FRAGMENTS)
-        + ALL_RANDOM_CRAFT
+        average_attempts_num * (ALL_RANDOM_CRAFT - ONE_TOY_FRAGMENTS)
     )
     data = {
         'chance': chance,
@@ -92,8 +91,7 @@ def get_specific_collection_craft(user_df):
     average_attempts_num = 100 / chance
     # Среднее количество осколков на крафт в определенной коллекции
     average_fragments_num = (
-        (average_attempts_num - 1) * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
-        + HALF_SPECIFIC_CRAFT
+        average_attempts_num * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
     )
     # Минимальное количество осколков на крафт и коллекции соответственно
     min_data = get_min_data(average_fragments_num)
@@ -117,8 +115,7 @@ def get_specific_category_craft(user_df):
     average_attempts_num = 100 / chance
     # Среднее количество осколков на крафт в определенной коллекции
     average_fragments_num = (
-        (average_attempts_num - 1) * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
-        + HALF_SPECIFIC_CRAFT
+        average_attempts_num * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
     )
     # Минимальное количество осколков на крафт и категории соответственно
     min_data = get_min_data(average_fragments_num)
@@ -145,8 +142,7 @@ def get_all_cpecific_craft(user_df):
     # Среднее количество осколков на крафт в определенной коллекции
     # и определенной категории
     average_fragments_num = (
-        (average_attempts_num - 1) * (ALL_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
-        + ALL_SPECIFIC_CRAFT
+        average_attempts_num * (ALL_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
     )
     # Минимальное количество осколков на крафт и
     # коллекции-категории соответственно
