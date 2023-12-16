@@ -13,6 +13,7 @@ def index(request):
     return render(request, 'calc/index.html')
 
 
+# Функция "фабрика" для создания представлений.
 def collection_view(form_class):
     @csrf_exempt
     @login_required
@@ -29,6 +30,7 @@ def collection_view(form_class):
     return view
 
 
+# Представления
 national = collection_view(NationalForm)
 christmas = collection_view(ChristmasForm)
 eastern = collection_view(EasternForm)

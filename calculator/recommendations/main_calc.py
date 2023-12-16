@@ -170,7 +170,6 @@ def main_calc(user_id):
     """
     album = UserAlbums.objects.get(user_id=user_id)
     user_df = get_user_df(album)
-    print(f'user_df: \n{user_df}')
 
     all_random_craft = get_all_random_craft(user_df)
     specific_collection_craft, collect_min = (
