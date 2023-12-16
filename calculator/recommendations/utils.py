@@ -1,6 +1,7 @@
 import numpy as np
 from calc.constants import (ALL_SPECIFIC_CRAFT, ANTIPOVTORITEL_CRAFT,
-                            HALF_SPECIFIC_CRAFT, UNCERT_COEF)
+                            HALF_SPECIFIC_CRAFT, ONE_TOY_FRAGMENTS,
+                            UNCERT_COEF)
 
 from .message_blanks import (all_random_better_next, all_random_definitely,
                              all_random_maybe, anti_povtoritel_definitely,
@@ -16,9 +17,9 @@ def anti_povtoritel_check(value):
     message = ''
     if np.isinf(value):
         message = congratulations
-    elif value >= ANTIPOVTORITEL_CRAFT:
+    elif value >= (ANTIPOVTORITEL_CRAFT - ONE_TOY_FRAGMENTS):
         message = anti_povtoritel_definitely
-    elif value >= ANTIPOVTORITEL_CRAFT * UNCERT_COEF:
+    elif value >= (ANTIPOVTORITEL_CRAFT - ONE_TOY_FRAGMENTS) * UNCERT_COEF:
         message = anti_povtoritel_maybe
     return message
 
@@ -28,14 +29,19 @@ def all_random_check(name, name_2, value, value_2):
 
     is_definitely = False  # Флаг, на однозначную целесообразность
     # если совет может быть неоднозначный
-    if name == 'all_random_min' and value_2 * UNCERT_COEF <= value:
+    if name == 'all_random_min' and (
+        (value_2 - ONE_TOY_FRAGMENTS) * UNCERT_COEF
+        <= (value - ONE_TOY_FRAGMENTS)
+    ):
         # и при этом если следующий по выгодности крафт будет
         # со 100% вероятностью
-        if name_2 == 'all_min' and value_2 == ALL_SPECIFIC_CRAFT:
+        if name_2 == 'all_min' and value_2 == (
+            ALL_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS
+        ):
             message = all_random_better_next
         elif (
             (name_2 == 'category_min' or name_2 == 'collect_min')
-            and value_2 == HALF_SPECIFIC_CRAFT
+            and value_2 == (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
         ):
             message = all_random_better_next
         else:
