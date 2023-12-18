@@ -9,11 +9,30 @@
       </a>
       <ul class="nav nav-pills">
         {% if request.user.is_authenticated %}
-        {% if view_name == 'recommendations:recommendations' %}
+        {% if view_name == 'recommendations:recommendations' or view_name == 'about:about' %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'calc:index' %}">На главную</a>
         </li>
         {% endif %}
+        <li class="nav-item">
+          <a class="nav-link
+            {% if view_name == 'recommendations:recommendations' %}active{% endif %}"
+            href="{% url 'recommendations:recommendations' %}">
+            Рекомендации
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link
+            {% if view_name == 'about:about' %}active{% endif %}" href="{% url 'about:about' %}">
+            О приложении
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link
+            {% if view_name == 'about:author' %}active{% endif %}" href="{% url 'about:author' %}">
+            Автор
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link link-light
             {% if view_name == 'users:logout' %}active{% endif %}" href="{% url 'users:logout' %}">

@@ -12,6 +12,7 @@ urlpatterns = [
             'recommendations.urls', namespace='recommendations'
         )
     ),
+    path('about/', include('about.urls', namespace='about')),
 ]
 
 handler404 = 'core.views.page_not_found'

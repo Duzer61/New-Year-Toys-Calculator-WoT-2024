@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'calc.apps.CalcConfig',
     'recommendations.apps.RecommendationsConfig',
+    'about.apps.AboutConfig',
 ]
 
 MIDDLEWARE = [
