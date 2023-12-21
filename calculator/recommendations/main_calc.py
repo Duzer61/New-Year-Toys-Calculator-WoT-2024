@@ -106,7 +106,7 @@ def get_all_random_craft(user_df, album_select):
 def get_specific_collection_craft(user_df):
     """
     Вычисляет среднее количество осколков на крафт одной
-    игрушки в определенной коллекции в случайной катекории.
+    игрушки в определенной коллекции в случайной категории.
     """
     # Осталось собрать игрушек для каждой коллекции
     missing_toys_in_collections = MAX_TOYS_IN_COLLECTION - user_df.sum()
