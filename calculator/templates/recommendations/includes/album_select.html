@@ -8,6 +8,12 @@
     <a href="{% url 'about:about' %}" class="my-link">О приложении</a>
   </p>
 </div>
+<div class="form-check form-switch" style="margin-bottom: 10px;">
+  <input class="form-check-input" type="checkbox" id="toggle" name="toggle">
+  <label class="form-check-label" for="toggle">
+    Выбрать альбомы. (По умолчанию расчет производится для всех.)
+  </label>
+</div>
 <div class="d-flex flex-row">
   <div class="form-check" style="margin-right: 10px;">
     <input class="form-check-input" type="checkbox" id="national" name="national"
@@ -41,4 +47,22 @@
     style="margin-right: 10px; margin-top: -5px;">Применить настройки</button>
 </div>
 </form>
+<script>
+  const toggleCheckbox = document.getElementById('toggle');
+  const disabledCheckboxes = document.querySelectorAll('.form-check-input:not(#toggle)');
+
+  toggleCheckbox.addEventListener('change', function () {
+      const isToggleChecked = this.checked;
+
+      if (isToggleChecked) {
+          disabledCheckboxes.forEach(function (checkbox) {
+              checkbox.removeAttribute('disabled');
+          });
+      } else {
+          disabledCheckboxes.forEach(function (checkbox) {
+              checkbox.setAttribute('disabled', 'disabled');
+          });
+      }
+  });
+</script>
 {% endif %}
