@@ -9,6 +9,7 @@ class AlbumSelectForm(forms.ModelForm):
     class Meta:
         model = AlbumSelect
         fields = [
+            'toggle',
             'national',
             'eastern',
             'magic',

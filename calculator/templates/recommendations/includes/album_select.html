@@ -9,7 +9,8 @@
   </p>
 </div>
 <div class="form-check form-switch" style="margin-bottom: 10px;">
-  <input class="form-check-input" type="checkbox" id="toggle" name="toggle">
+  <input class="form-check-input" type="checkbox" id="toggle" name="toggle"
+  {% if form.initial.toggle %}checked{% endif %}>
   <label class="form-check-label" for="toggle">
     Выбрать альбомы. (По умолчанию расчет производится для всех.)
   </label>
@@ -48,21 +49,23 @@
 </div>
 </form>
 <script>
+  function toggleCheckboxes() {
+    const toggleCheckbox = document.getElementById('toggle');
+    const disabledCheckboxes = document.querySelectorAll('.form-check-input:not(#toggle)');
+    if (toggleCheckbox.checked) {
+      disabledCheckboxes.forEach(function (checkbox) {
+        checkbox.removeAttribute('disabled');
+      });
+    } else {
+      disabledCheckboxes.forEach(function (checkbox) {
+        checkbox.setAttribute('disabled', 'disabled');
+      });
+    }
+  }
+  toggleCheckboxes(); // Вызываем функцию после загрузки страницы
   const toggleCheckbox = document.getElementById('toggle');
-  const disabledCheckboxes = document.querySelectorAll('.form-check-input:not(#toggle)');
-
   toggleCheckbox.addEventListener('change', function () {
-      const isToggleChecked = this.checked;
-
-      if (isToggleChecked) {
-          disabledCheckboxes.forEach(function (checkbox) {
-              checkbox.removeAttribute('disabled');
-          });
-      } else {
-          disabledCheckboxes.forEach(function (checkbox) {
-              checkbox.setAttribute('disabled', 'disabled');
-          });
-      }
+    toggleCheckboxes();
   });
 </script>
 {% endif %}

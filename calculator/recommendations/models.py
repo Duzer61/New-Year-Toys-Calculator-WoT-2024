@@ -15,6 +15,10 @@ class AlbumSelect(models.Model):
         related_name='selects',
         verbose_name='Пользователь',
     )
+    toggle = models.BooleanField(
+        default=False,
+        verbose_name='Переключатель',
+    )
     national = models.BooleanField(
         default=True,
         verbose_name='Отечественный'
@@ -37,5 +41,12 @@ class AlbumSelect(models.Model):
         Не позволят удалить все альбомы из расчета.
         Хотя бы один должен быть включен.
         """
+        toggle = self.toggle
+        if not toggle:
+            self.toggle = False
+            self.national = True
+            self.eastern = True
+            self.magic = True
+            self.christmas = True
         if not any([self.national, self.eastern, self.magic, self.christmas]):
             raise ValidationError('Должен остаться хотя-бы один :)')
