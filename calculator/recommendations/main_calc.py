@@ -24,23 +24,35 @@ full_df = pd.DataFrame(
     }
 )
 
-albums = ['national', 'eastern', 'magic', 'christmas']
-items = ['hanging', 'crown', 'gift', 'garland']
+ALBUMS = ['national', 'eastern', 'magic', 'christmas']
+ITEMS = ['hanging', 'crown', 'gift', 'garland']
 
 
-def get_user_df(album):
+def get_user_df(album, album_select):
     """
     Возвращает DataFrame pandas для коллекции пользователя.
+    И датафрейм с актуальными альбомами (которые пользователь
+    выбрал для крафта).
     """
 
     album_data = {}
-    for album_type in albums:
+    for album_type in ALBUMS:
         album_data[album_type] = {}
-        for item in items:
+        for item in ITEMS:
             element_name = f'{album_type}_{item}'
             album_data[album_type][item] = getattr(album, element_name)
     user_df = pd.DataFrame(album_data)
-    return user_df
+    if album_select.toggle:
+        actual_albums = [
+            album for album in ALBUMS if getattr(album_select, album)
+        ]
+        print(f'actual_albums: {actual_albums}')  # Список выбранных альбомов (actual_albums)
+        # actual_albums_num = len(actual_albums)
+        actual_df = user_df[actual_albums]  # Урезаем датафрейм
+    else:
+        actual_df = user_df
+    print(f'actual_df: {actual_df}')  # Датафрейм с актуальными альбомами (actual_df)
+    return user_df, actual_df
 
 
 def get_min_data(average_fragments_num):
@@ -60,23 +72,15 @@ def get_min_data(average_fragments_num):
     return min_data
 
 
-def get_all_random_craft(user_df, album_select):
+def get_all_random_craft(user_df, actual_df):
     """
     Вычисляет среднее количество осколков на крафт одной
     игрушки случайной категории в случайной коллекции.
     """
-
-    print(album_select.__dict__)
-    print(f'Выключатель: {album_select.toggle}')
-    if album_select.toggle:  # Если включен выбор альбомов для рассчета
-        # определяем выбранные альбомы
-        actual_albums = [
-            album for album in albums if getattr(album_select, album)
-        ]
-        print(actual_albums)
-        actual_albums_num = len(actual_albums)
-        actual_df = user_df[actual_albums]  # Урезаем датафрейм
-        print(actual_df)
+    if not actual_df.equals(user_df):  # Если пользователь выбрал не все альбомы
+        print('Пользователь выбрал не все альбомы')
+        actual_albums_num = actual_df.shape[1]  # Количество выбранных альбомов
+        print(f'Число актуальных альбомов: {actual_albums_num}')
         toys_collected = actual_df.sum().sum()
         diff = (
             TOTAL_TOYS - (COLLECTIONS_NUM - actual_albums_num)
@@ -85,6 +89,7 @@ def get_all_random_craft(user_df, album_select):
         print(f'toys_collected: {toys_collected}')
         print(f'diff: {diff}')
     else:
+        print('Пользователь выбрал все альбомы')
         toys_collected = user_df.sum().sum()  # Количество собранных игрушек
         diff = TOTAL_TOYS - toys_collected  # Всего осталось собрать игрушек
         print(f'toys_collected: {toys_collected}')
@@ -103,7 +108,7 @@ def get_all_random_craft(user_df, album_select):
     return data
 
 
-def get_specific_collection_craft(user_df):
+def get_specific_collection_craft(user_df, album_select):
     """
     Вычисляет среднее количество осколков на крафт одной
     игрушки в определенной коллекции в случайной категории.
@@ -195,11 +200,11 @@ def main_calc(user_id):
     """
     album = UserAlbums.objects.get(user_id=user_id)
     album_select = AlbumSelect.objects.get(user_id=user_id)
-    user_df = get_user_df(album)
+    user_df, actual_df = get_user_df(album, album_select)
 
-    all_random_craft = get_all_random_craft(user_df, album_select)
+    all_random_craft = get_all_random_craft(user_df, actual_df)
     specific_collection_craft, collect_min = (
-        get_specific_collection_craft(user_df)
+        get_specific_collection_craft(user_df, album_select)
     )
     specific_category_craft, category_min = (
         get_specific_category_craft(user_df)
