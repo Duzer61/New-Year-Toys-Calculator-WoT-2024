@@ -141,13 +141,17 @@ def get_specific_collection_craft(user_df, actual_albums):
     return data, min_data
 
 
-def get_specific_category_craft(user_df):
+def get_specific_category_craft(actual_df, actual_albums):
     """
     Вычисляет среднее количество осколков на крафт одной игрушки
     в определенной категории в случайной коллекции.
     """
     # Осталось собрать игрушек для каждой категории
-    missing_toys_in_categories = full_df.sum(axis=1) - user_df.sum(axis=1)
+    missing_toys_in_categories = (
+        full_df.sum(axis=1) / COLLECTIONS_NUM * len(actual_albums)
+        - actual_df.sum(axis=1)
+    )
+    print(f'missing_toys_in_categories: {missing_toys_in_categories}')
     # Вероятность удачного крафта в каждой категории в случайной коллекции
     chance = missing_toys_in_categories / full_df.sum(axis=1) * 100
     # Среднее количество попыток на крафт в категории
@@ -158,7 +162,7 @@ def get_specific_category_craft(user_df):
     )
     # Минимальное количество осколков на крафт и категории соответственно
     min_data = get_min_data(average_fragments_num)
-
+    print(f'min_data в категориях: {min_data}')
     data = {
         'chance': chance.to_dict(),
         'average_fragments_num': average_fragments_num.to_dict(),
@@ -217,7 +221,7 @@ def main_calc(user_id):
         get_specific_collection_craft(user_df, actual_albums)
     )
     specific_category_craft, category_min = (
-        get_specific_category_craft(user_df)
+        get_specific_category_craft(actual_df, actual_albums)
     )
     all_specific_craft, all_min = get_all_cpecific_craft(user_df)
     tables_data = {
