@@ -65,7 +65,9 @@ def get_min_data(average_fragments_num):
     по коллекциям или по категориям, а так-же имена коллекций или
     категорий с этим значением.
     """
-    min_value = average_fragments_num.min()
+    # Исключаем из сравнения строки ('пропуск')
+    numeric_values = pd.to_numeric(average_fragments_num, errors='coerce')
+    min_value = numeric_values.min()
     min_names = average_fragments_num[
         average_fragments_num == min_value
     ].index.to_list()
@@ -73,7 +75,6 @@ def get_min_data(average_fragments_num):
         'min_value': min_value,
         'min_names': min_names,
     }
-    print(f'min_data: {min_data}')
     return min_data
 
 
@@ -106,7 +107,7 @@ def get_all_random_craft(actual_df):
     return data
 
 
-def get_specific_collection_craft(user_df, actual_df):
+def get_specific_collection_craft(user_df, actual_albums):
     """
     Вычисляет среднее количество осколков на крафт одной
     игрушки в определенной коллекции в случайной категории.
@@ -116,23 +117,23 @@ def get_specific_collection_craft(user_df, actual_df):
     # Вероятность удачного крафта в каждой коллекции в случайной категории
     chance = missing_toys_in_collections / MAX_TOYS_IN_COLLECTION * 100
     print(f'chance:\n{chance}')
-    print(f'actual_df:\n{actual_df}')
     # Среднее количество попыток на крафт в коллекции
     average_attempts_num = 100 / chance
     # Среднее количество осколков на крафт в определенной коллекции
     average_fragments_num = (
         average_attempts_num * (HALF_SPECIFIC_CRAFT - ONE_TOY_FRAGMENTS)
     )
-    # Столбцы, которые актуальны
-    columns_to_check = actual_df.columns.tolist()
-    print(f'columns_to_check:\n{columns_to_check}')
     # Проверяем соответствие имен строк шансов и актуального датафрейма
-    mask = ~chance.index.isin(columns_to_check)
+    mask = ~chance.index.isin(actual_albums)
     # Заменяем значения строк, которые не актуальны
-    chance.loc[mask] = 0
+    chance.loc[mask] = 'пропуск'
     print(f'Обновленный chance:\n{chance}')
+    mask = ~average_fragments_num.index.isin(actual_albums)
+    average_fragments_num.loc[mask] = 'пропуск'
+    print(f'Обновленный average_fragments_num:\n{average_fragments_num}')
     # Минимальное количество осколков на крафт и коллекции соответственно
     min_data = get_min_data(average_fragments_num)
+    print(f'min_data: {min_data}')
     data = {
         'chance': chance.to_dict(),
         'average_fragments_num': average_fragments_num.to_dict(),
@@ -213,7 +214,7 @@ def main_calc(user_id):
     actual_df, actual_albums = get_actual_df(user_df, album_select)
     all_random_craft = get_all_random_craft(actual_df)
     specific_collection_craft, collect_min = (
-        get_specific_collection_craft(user_df, actual_df)
+        get_specific_collection_craft(user_df, actual_albums)
     )
     specific_category_craft, category_min = (
         get_specific_category_craft(user_df)

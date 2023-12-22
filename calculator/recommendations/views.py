@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import AlbumSelectForm
-from .main_calc import ALBUMS, main_calc
+from .main_calc import main_calc
 from .models import AlbumSelect
 from .utils import get_advice
 
@@ -28,6 +28,5 @@ def recommendations(request):
         'user_advice': advice,
         'user_advice_2': advice_2,
         'form': form,
-        'albums': ALBUMS,
     }
     return render(request, 'recommendations/recommendations.html', context)

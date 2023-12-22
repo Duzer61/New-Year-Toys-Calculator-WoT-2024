@@ -118,7 +118,9 @@
           <th scope="row" class="table-warning">Все категории</th>
           {% for key, value in user_result.specific_collection_craft.average_fragments_num.items %}
             <td class="table-warning">
-              {% if value|floatformat:0 == 'inf' %}
+              {% if value == 'пропуск' %}
+                пропуск
+              {% elif value|floatformat:0 == 'inf' %}
                 собрано
               {% else %}
                 {{ value|floatformat:0 }}
