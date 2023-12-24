@@ -24,9 +24,9 @@
     {% include 'recommendations/includes/fragments_table.html' %}
     <div class="d-flex justify-content-center">
       {% if request.META.HTTP_REFERER == none %}
-      <a href="{% url 'calc:national' %}" class="btn btn-primary">К коллекциям</a>
+      <a href="{% url 'calc:national' %}" class="btn btn-primary">Назад</a>
       {% else %}
-      <a href="{{ request.META.HTTP_REFERER}}" class="btn btn-primary">К коллекциям</a>
+      <a href="{{ request.META.HTTP_REFERER}}" class="btn btn-primary">Назад</a>
       {% endif %}
     </div>
   </div>
