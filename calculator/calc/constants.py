@@ -17,3 +17,11 @@ ANTIPOVTORITEL_CRAFT = 2080  # Количество осколков на кра
 
 UNCERT_COEF = 0.7  # Коэффициент неопределенности. Обозначает при какой разнице
 # значений можно рассмотреть и другой вариант
+
+# Полная коллекция альбомов
+FULL_COLLECTION_DATA = {
+    'hanging': MAX_HANGING,
+    'crown': MAX_CROWN,
+    'gift': MAX_GIFT,
+    'garland': MAX_GARLAND
+}

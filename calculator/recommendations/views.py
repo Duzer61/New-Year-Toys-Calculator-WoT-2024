@@ -15,7 +15,6 @@ def recommendations(request):
 
     user_id = request.user.id
     album_select, created = AlbumSelect.objects.get_or_create(user_id=user_id)
-    print(f'album_select: {album_select}')
     form = AlbumSelectForm(request.POST or None, instance=album_select)
     if form.is_valid():
         album_select = form.save(commit=False)

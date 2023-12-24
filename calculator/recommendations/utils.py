@@ -122,11 +122,8 @@ def get_advice(min_data):
         'all_min': min_data['all_min']['min_value'],
     }
     min_values = sorted(min_values.items(), key=lambda x: x[1])
-    print(f'min_values:\n{min_values}')
     min_name, min_value = min_values[0][0], min_values[0][1]
     min_name_2, min_value_2 = min_values[1][0], min_values[1][1]
-    print(f'min_name: {min_name}, min_value: {min_value}')
-    print(f'min_name_2: {min_name_2}, min_value_2: {min_value_2}')
     message = anti_povtoritel_check(min_value)
     message_2 = ''
     if message:  # если есть рекомендации с анитповторителем, то возвращаем их
