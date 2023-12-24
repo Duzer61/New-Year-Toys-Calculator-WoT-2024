@@ -28,7 +28,9 @@
             {% for key, value in values.items %}
               {% if key == 'hanging' %}
               <td>
-                {% if value|floatformat:0 == 'inf' %}
+                {% if value == 'пропуск' %}
+                  пропуск
+                {% elif value|floatformat:0 == 'inf' %}
                   собрано
                 {% else %}
                   {{ value|floatformat:0 }}
@@ -51,7 +53,9 @@
             {% for key, value in values.items %}
               {% if key == 'crown' %}
               <td>
-                {% if value|floatformat:0 == 'inf' %}
+                {% if value == 'пропуск' %}
+                  пропуск
+                {% elif value|floatformat:0 == 'inf' %}
                   собрано
                 {% else %}
                   {{ value|floatformat:0 }}
@@ -74,7 +78,9 @@
             {% for key, value in values.items %}
               {% if key == 'gift' %}
               <td>
-                {% if value|floatformat:0 == 'inf' %}
+                {% if value == 'пропуск' %}
+                  пропуск
+                {% elif value|floatformat:0 == 'inf' %}
                   собрано
                 {% else %}
                   {{ value|floatformat:0 }}
@@ -97,7 +103,9 @@
               {% for key, value in values.items %}
                 {% if key == 'garland' %}
                 <td>
-                  {% if value|floatformat:0 == 'inf' %}
+                  {% if value == 'пропуск' %}
+                    пропуск
+                  {% elif value|floatformat:0 == 'inf' %}
                     собрано
                   {% else %}
                     {{ value|floatformat:0 }}
@@ -118,7 +126,9 @@
           <th scope="row" class="table-warning">Все категории</th>
           {% for key, value in user_result.specific_collection_craft.average_fragments_num.items %}
             <td class="table-warning">
-              {% if value|floatformat:0 == 'inf' %}
+              {% if value == 'пропуск' %}
+                пропуск
+              {% elif value|floatformat:0 == 'inf' %}
                 собрано
               {% else %}
                 {{ value|floatformat:0 }}

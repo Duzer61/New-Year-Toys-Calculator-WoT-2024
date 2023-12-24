@@ -21,11 +21,11 @@
       </thead>
         <tr>
           <td class="table-warning">
-            {{ user_result.all_random_craft.chance|floatformat:0 }}
+            {{ user_result.all_random_craft.chance|floatformat:2 }}
           </td>
           <td class="table-warning">
             {% if user_result.all_random_craft.average_fragments_num|floatformat:0 == 'inf' %}
-              Собран весь 5 лвл. Поздравляю!
+              Собрано
             {% else %}
               {{ user_result.all_random_craft.average_fragments_num|floatformat:0 }}
             {% endif %}

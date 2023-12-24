@@ -86,7 +86,11 @@
           <th scope="row" class="table-warning">Все категории</th>
           {% for key, value in user_result.specific_collection_craft.chance.items %}
             <td class="table-warning">
+              {% if value == 'пропуск' %}
+                пропуск
+              {% else %}
               {{ value|floatformat:2 }}
+              {% endif %}
             </td>
           {% endfor %}
         </tr>
