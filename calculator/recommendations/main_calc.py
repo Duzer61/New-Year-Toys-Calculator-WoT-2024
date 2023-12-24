@@ -59,18 +59,39 @@ def get_actual_df(user_df, album_select):
     return actual_df, actual_albums
 
 
-def get_min_data(average_fragments_num):
+def get_min_data(average_fragments_num, actual_albums=None):
     """
     Возвращает значение минимального количества осколков на крафт
     по коллекциям или по категориям, а так-же имена коллекций или
     категорий с этим значением.
     """
     # Исключаем из сравнения строки ('пропуск')
-    numeric_values = pd.to_numeric(average_fragments_num, errors='coerce')
-    min_value = numeric_values.min()
-    min_names = average_fragments_num[
-        average_fragments_num == min_value
-    ].index.to_list()
+    print(f'average_fragments_num в функции get_min_data:\n{average_fragments_num}')
+    if average_fragments_num.ndim == 1:  # Вычисления для одномерного датафрейма
+        print("average_fragments_num является одномерным датафреймом (серией)")
+        numeric_values = pd.to_numeric(average_fragments_num, errors='coerce')
+        min_value = numeric_values.min()
+        min_names = average_fragments_num[
+            average_fragments_num == min_value
+        ].index.to_list()
+    else:  # Вычисления для двумерного датафрейма
+        print("average_fragments_num является двумерным датафреймом")
+        columns_to_drop = average_fragments_num.columns[
+            ~average_fragments_num.columns.isin(actual_albums)
+        ]
+        average_fragments_num_drop = average_fragments_num.drop(
+            columns_to_drop, axis=1
+        )
+        print(f'average_fragments_num_drop:\n{average_fragments_num_drop}')
+        # Минимальное количество осколков на крафт и
+        # коллекции-категории соответственно
+        min_value = average_fragments_num_drop.min().min()
+        print(f'min_value: {min_value}')
+        min_names = average_fragments_num_drop[
+            average_fragments_num_drop == min_value
+        ].stack().index.tolist()
+        print(f'min_names: {min_names}')
+
     min_data = {
         'min_value': min_value,
         'min_names': min_names,
@@ -193,26 +214,26 @@ def get_all_cpecific_craft(user_df, actual_albums):
     ] = 'пропуск'
     print(f'average_fragments_num:\n{average_fragments_num}')
     # Удаляем неактуальные столбцы, чтобы найти минимальные значения
-    columns_to_drop = average_fragments_num.columns[
-        ~average_fragments_num.columns.isin(actual_albums)
-    ]
-    average_fragments_num_drop = average_fragments_num.drop(
-        columns_to_drop, axis=1
-    )
-    print(f'average_fragments_num_drop:\n{average_fragments_num_drop}')
-    # Минимальное количество осколков на крафт и
-    # коллекции-категории соответственно
-    min_value = average_fragments_num_drop.min().min()
-    print(f'min_value: {min_value}')
-    min_names = average_fragments_num_drop[
-        average_fragments_num_drop == min_value
-    ].stack().index.tolist()
-    print(f'min_names: {min_names}')
-    min_data = {
-        'min_value': min_value,
-        'min_names': min_names,
-    }
-    # min_data = get_min_data(average_fragments_num)
+    min_data = get_min_data(average_fragments_num, actual_albums)
+    # columns_to_drop = average_fragments_num.columns[
+    #     ~average_fragments_num.columns.isin(actual_albums)
+    # ]
+    # average_fragments_num_drop = average_fragments_num.drop(
+    #     columns_to_drop, axis=1
+    # )
+    # print(f'average_fragments_num_drop:\n{average_fragments_num_drop}')
+    # # Минимальное количество осколков на крафт и
+    # # коллекции-категории соответственно
+    # min_value = average_fragments_num_drop.min().min()
+    # print(f'min_value: {min_value}')
+    # min_names = average_fragments_num_drop[
+    #     average_fragments_num_drop == min_value
+    # ].stack().index.tolist()
+    # print(f'min_names: {min_names}')
+    # min_data = {
+    #     'min_value': min_value,
+    #     'min_names': min_names,
+    # }
     data = {
         'chance': сhance.to_dict(),
         'average_fragments_num': average_fragments_num.to_dict(),
@@ -239,7 +260,9 @@ def main_calc(user_id):
     specific_category_craft, category_min = (
         get_specific_category_craft(actual_df, actual_albums)
     )
-    all_specific_craft, all_min = get_all_cpecific_craft(user_df, actual_albums)
+    all_specific_craft, all_min = get_all_cpecific_craft(
+        user_df, actual_albums
+    )
     tables_data = {
         'all_random_craft': all_random_craft,
         'specific_collection_craft': specific_collection_craft,
