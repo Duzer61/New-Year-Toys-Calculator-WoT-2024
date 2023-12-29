@@ -45,6 +45,12 @@
         {% else %}
         <li class="nav-item">
           <a class="nav-link link-light
+            {% if view_name == 'about:about' %}active{% endif %}" href="{% url 'about:about' %}">
+            О приложении
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-light
             {% if view_name == 'users:login' %}active{% endif %}" href="{% url 'users:login' %}">
             Войти
           </a>
