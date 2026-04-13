@@ -6,7 +6,7 @@ WORKDIR /calculator_app
 
 RUN pip install setuptools
 
-RUN pip install gunicorn==20.1.0
+RUN pip install gunicorn==21.2.0
 
 COPY requirements.txt .
 
