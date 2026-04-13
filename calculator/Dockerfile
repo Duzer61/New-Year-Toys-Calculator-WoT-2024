@@ -4,6 +4,8 @@ RUN pip3 install --upgrade pip
 
 WORKDIR /calculator_app
 
+RUN pip install setuptools
+
 RUN pip install gunicorn==20.1.0
 
 COPY requirements.txt .
