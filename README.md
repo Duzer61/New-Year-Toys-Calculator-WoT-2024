@@ -23,4 +23,4 @@
  - Git Actions
 
  ## Автор
-Данил Кочетов - [GitHub](https://github.com/Duzer61)
+Данил Кочетов — [GitHub](https://github.com/Duzer61)
