@@ -6,11 +6,11 @@
 
 | Компонент | Настройка |
 | --- | --- |
-| Сервер | AdminVPS, `155.212.246.84` |
-| Администратор | `dan`, привилегированные команды через sudo |
+| Сервер | Адрес VPS задаётся в GitHub Secret `HOST` |
+| Администратор | Личная учётная запись с sudo; имя хранится в локальной инструкции |
 | Каталог проекта | `/srv/projects/calculator` |
 | Compose | `/etc/calculator/compose.yml`, project name `calculator` |
-| Приложение | Python 3.12, Django 4.2.7, образ `duzer61/calculator` |
+| Приложение | Python 3.12, Django 4.2.7; репозиторий образа задан в сценарии деплоя |
 | База данных | PostgreSQL 16, сервис `db_django` |
 | Сеть | `calculator_default` |
 | Тома | `calculator_pg_data`, `calculator_static_volume`, `calculator_media` |
@@ -49,10 +49,10 @@ sudo /usr/local/sbin/calculator-deploy 'deploy sha256:<64 lowercase hex>'
 
 ## SSH-доступ CI
 
-Для GitHub используется отдельный пользователь `calculator-deploy` без группы `docker`
+Для GitHub используется отдельная учётная запись деплоя без группы `docker`
 и без произвольного sudo. SSH-ключ ограничен параметрами
 `restrict,command="/usr/local/sbin/calculator-deploy-entry"`.
-Разрешена только команда `deploy sha256:<64 lowercase hex>` для образа из `duzer61/calculator`.
+Разрешена только команда `deploy sha256:<64 lowercase hex>` для репозитория образа, заданного в `scripts/deploy-root.sh`.
 
 Compose, сценарии и `authorized_keys` принадлежат root. Публичный `authorized_keys` имеет права `644`:
 SSH может читать его, но пользователь деплоя не может менять ограничения.
@@ -61,11 +61,11 @@ SSH может читать его, но пользователь деплоя �
 
 | GitHub Secret | Назначение |
 | --- | --- |
-| `HOST` | `155.212.246.84` |
-| `USER` | `calculator-deploy` |
+| `HOST` | Адрес VPS из локальной инструкции |
+| `USER` | Имя учётной записи из `scripts/install-adminvps.sh` |
 | `SSH_KEY` | Полный приватный Ed25519-ключ CI, включая строки BEGIN/END; файл `.pub` не подходит |
 | `SSH_KNOWN_HOSTS` | Доверенная публичная запись сервера; хешированный формат `\|1\|` допустим |
-| `DOCKER_USERNAME` | `duzer61` |
+| `DOCKER_USERNAME` | Docker Hub ID владельца репозитория образа |
 | `DOCKER_PASSWORD` | Docker Hub Personal Access Token с правами Repo Read & Write, не пароль аккаунта |
 
 Доступ Cloud Sandboxes для Docker Hub PAT не требуется. SSH проверяет ключ хоста;
