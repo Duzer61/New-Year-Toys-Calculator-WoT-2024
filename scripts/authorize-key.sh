@@ -11,5 +11,5 @@ target=/var/lib/calculator-deploy/.ssh/authorized_keys
 umask 077
 printf 'restrict,command="/usr/local/sbin/calculator-deploy-entry" %s\n' "${lines[0]}" >"$target"
 chown root:root "$target"
-chmod 600 "$target"
+chmod 644 "$target"
 echo 'Restricted Calculator deployment public key installed.'
