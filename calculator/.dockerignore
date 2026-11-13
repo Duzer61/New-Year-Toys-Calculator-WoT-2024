@@ -3,4 +3,16 @@ venv
 .idea
 .vscode
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.log
+*.sqlite3
 __pycache__/
+*.py[cod]
+.venv/
+venv/
+staticfiles/
+media/

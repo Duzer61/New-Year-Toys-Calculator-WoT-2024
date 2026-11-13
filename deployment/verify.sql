@@ -1,0 +1,15 @@
+SELECT 'auth_group=' || count(*) FROM public."auth_group";
+SELECT 'auth_group_permissions=' || count(*) FROM public."auth_group_permissions";
+SELECT 'auth_permission=' || count(*) FROM public."auth_permission";
+SELECT 'auth_user=' || count(*) FROM public."auth_user";
+SELECT 'auth_user_groups=' || count(*) FROM public."auth_user_groups";
+SELECT 'auth_user_user_permissions=' || count(*) FROM public."auth_user_user_permissions";
+SELECT 'calc_useralbums=' || count(*) FROM public."calc_useralbums";
+SELECT 'captcha_captchastore=' || count(*) FROM public."captcha_captchastore";
+SELECT 'django_admin_log=' || count(*) FROM public."django_admin_log";
+SELECT 'django_content_type=' || count(*) FROM public."django_content_type";
+SELECT 'django_migrations=' || count(*) FROM public."django_migrations";
+SELECT 'django_session=' || count(*) FROM public."django_session";
+SELECT 'recommendations_albumselect=' || count(*) FROM public."recommendations_albumselect";
+SELECT 'migrations=' || string_agg(app || ':' || name, ',' ORDER BY app,name) FROM django_migrations;
+SELECT 'extensions=' || string_agg(extname, ',' ORDER BY extname) FROM pg_extension;
