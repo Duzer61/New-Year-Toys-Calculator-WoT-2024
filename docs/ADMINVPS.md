@@ -1,139 +1,145 @@
-# Calculator: перенос на AdminVPS
+# Развёртывание и обслуживание Calculator
 
-13 ноября 2026: Calculator восстановлен на AdminVPS и работает по https://collider.hopto.org.
-Пользователь подтвердил вход, сайт и админку. БД восстановлена до первого запуска приложения;
-проверены все 13 таблиц, 13 пользователей, 13 альбомов, 10 настроек выбора и 23 миграции.
-HTTP перенаправляется на HTTPS, статика доступна. Сертификат действует до 11 февраля 2027;
-`certbot renew --cert-name collider.hopto.org --dry-run` прошёл успешно, `certbot.timer` активен.
-Отдельный ограниченный SSH-ключ установлен и проверен. Полный автоматический деплой из GitHub
-предстоит подтвердить после включения CALCULATOR_DEPLOY_ENABLED; ручные деплои уже прошли успешно.
+Сайт: https://collider.hopto.org. Production-ветка — `main`, рабочая ветка — `adminvps-migration`.
 
-## Область изменений
+## Конфигурация сервера
 
-Рабочая ветка `adminvps-migration` от актуальной `origin/main` (`0aa7b4e`), production `main`.
-Модели, формулы, настройки cookie/CAPTCHA, миграции и зависимости приложения сохранены.
-С разрешения пользователя исправлена одна ссылка в шаблоне 404: posts:index → calc:index.
-Это устранило HTTP 500 на /admin без завершающего слеша и неизвестных URL (PR #28).
-В main ранее было слито обновление Pillow 13.0.0; оно сохранено. Python 3.12 и Django 4.2.7 сохранены.
-Django 4.2 больше не получает поддержку; обновление зависимостей не входит в текущий перенос.
-Dockerfile приложения сохранён. Расширен `.dockerignore`, исключающий секреты и локальные артефакты из контекста сборки.
-В development Compose добавлен только `restart: unless-stopped` для трёх сервисов.
+| Компонент | Настройка |
+| --- | --- |
+| Сервер | AdminVPS, `155.212.246.84` |
+| Администратор | `dan`, привилегированные команды через sudo |
+| Каталог проекта | `/srv/projects/calculator` |
+| Compose | `/etc/calculator/compose.yml`, project name `calculator` |
+| Приложение | Python 3.12, Django 4.2.7, образ `duzer61/calculator` |
+| База данных | PostgreSQL 16, сервис `db_django` |
+| Сеть | `calculator_default` |
+| Тома | `calculator_pg_data`, `calculator_static_volume`, `calculator_media` |
+| Внутренний Nginx | `/etc/calculator/nginx.conf`, порт `127.0.0.1:9000` |
+| Nginx хоста | `/etc/nginx/sites-available/collider.hopto.org`, ссылка в `sites-enabled` |
+| Секреты приложения | `/srv/projects/calculator/.env`, владелец root, права `600` |
+| Состояние деплоя и резервные копии | `/var/lib/calculator`, доступ только root |
 
-## Проверка исходных данных
+Приложение и PostgreSQL не публикуют порты на хосте. Внешние запросы принимает Nginx на 80/443.
+У всех трёх сервисов задано `restart: unless-stopped`; контейнеры, остановленные вручную,
+после перезагрузки остаются остановленными. Для логов используется драйвер `local`.
 
-Исходный том: `backup/var/lib/docker/volumes/calculator_pg_data/_data` в рабочей папке восстановления.
-PG_VERSION=13, база `django`, UTF8, en_US.utf8. Исходный бэкап не изменялся.
-Данные PostgreSQL скопированы по списку каталогов движка; старые конфиги, ключи, окружение и приложения не переносились.
-Чистый PostgreSQL 13 запущен без сети на отдельной копии. Создан дамп custom без владельцев/ACL.
-Дамп: `/home/dan/Dev/beget_backup/recovery/calculator/calculator_db.dump`.
-SHA256: `b8cf743b6ab61964b97d0ec819ba02913fc62b19a59f356413173e77ddca754e`.
-В отдельной пустой PostgreSQL 16 импорт одной транзакцией выполнен успешно.
-Совпали все 13 таблиц по количеству строк, 23 Django-миграции и список расширений (`plpgsql`).
-Пользователей 13, альбомов 13, настроек выбора альбомов 10. Пользовательские записи не выводились.
-Полный безопасный отчёт: `/home/dan/Dev/beget_backup/recovery/calculator/verification.json`.
-Том `calculator_media` пуст: 0 файлов. В моделях нет ImageField/FileField. Старую статику не переносим;
-`collectstatic` и отдельное копирование каталога `static` из образа воспроизводят прежнюю схему.
-Проверка устанавливает целостность сохранённой копии, а не полноту данных непосредственно перед инцидентом.
+## Автоматический деплой
 
-## Изоляция на сервере
+1. Подготовить изменения в рабочей ветке и открыть PR в `main`.
+2. Дождаться успешного `checks`: сборка образа, проверки Django, миграции на отдельной тестовой БД и HTTP-проверки.
+3. Слить PR в `main`. GitHub Actions соберёт образ, опубликует его в Docker Hub и передаст серверу точный digest.
+4. Сервер сохранит дамп БД, остановит приложение и внутренний Nginx, выполнит готовые миграции и сборку статики.
+5. После запуска контейнеров сервер проверит health и HTTP. Результат доступен в GitHub Actions.
 
-- Администратор: `dan@155.212.246.84`, привилегированные действия выполняет пользователь через sudo.
-- Проект: `/srv/projects/calculator`, секретный файл `.env` создаёт администратор вручную, root:root 600.
-- Compose: `/etc/calculator/compose.yml`, project name `calculator`.
-- Тома: `calculator_pg_data`, `calculator_static_volume`, `calculator_media`; отдельная сеть `calculator_default`.
-- PostgreSQL 16 и стандартный Nginx закреплены по digest. PostgreSQL 13 используется только для извлечения дампа.
-- Приложение: `duzer61/calculator@sha256:<digest>`; версия определяется результатом сборки CI.
-- Приложение и БД не имеют опубликованных портов. Контейнерный Nginx: только `127.0.0.1:9000`.
-- Хостовый Nginx: отдельный сайт `collider.hopto.org`, proxy_pass на loopback 9000; HTTPS добавлен Certbot.
-  /etc/nginx/sites-available/collider.hopto.org и ссылка в sites-enabled.
-  Шаблон deployment/nginx/collider.hopto.org.conf предназначен только для первоначальной HTTP-настройки;
-  не заменять им установленный конфиг с HTTPS.
-- `restart: unless-stopped` у всех трёх сервисов; намеренно остановленные контейнеры после reboot остаются остановленными.
-- Везде logging driver `local`. Все проверки Compose — `config -q`.
-- Career Tracker, Funny_recipes, общие SSH/firewall/Certbot настройки не меняются.
+Деплой включён при repository variable `CALCULATOR_DEPLOY_ENABLED=true`.
+Значение `false` отключает автоматическое обновление сервера, сохраняя проверки и публикацию образа.
+Push, содержащий только Markdown-документацию или LICENSE, workflow не запускает.
+Для ручного запуска в GitHub Actions выбрать **Run workflow** и ветку `main`.
 
-## Установка и восстановление
+Сценарий выполняет `check`, `migrate --noinput`, `migrate --check`, `collectstatic`
+и копирование проектной статики из образа. Новые миграции на сервере не создаются.
+Статика и media хранятся в отдельных томах и сохраняются при обновлении приложения.
+Автоматического отката БД нет: при ошибке деплой завершается, данные и резервная копия сохраняются.
 
-`install-adminvps.sh` отказывается перезаписывать существующие каталоги, сценарии, пользователя,
-Compose-контейнеры/тома Calculator. Проверяет порт 9000 и контрольную сумму дампа.
-Устанавливает root-owned сценарии и конфиги; не создаёт реальный `.env`, не запускает контейнеры,
-не подключает SSH-ключ, не изменяет Nginx хоста.
+Ручной деплой фиксированного образа:
 
-После установки создать `.env` из `.env.example`, права 600, заполнить новые DJANGO_KEY и POSTGRES_PASSWORD локально.
-POSTGRES_DB=calculator, POSTGRES_USER=calculator, DB_HOST=db_django, DB_PORT=5432,
-DEBUG=False, ALLOWED_HOSTS=collider.hopto.org,127.0.0.1,localhost.
-Новый DJANGO_KEY аннулирует старые подписанные сессии; пользовательские учётные записи и пароли остаются в восстановленной БД.
-Внешнего CAPTCHA-сервиса нет: django-simple-captcha генерирует изображения внутри приложения.
+```bash
+sudo /usr/local/sbin/calculator-deploy 'deploy sha256:<64 lowercase hex>'
+```
 
-`sudo /usr/local/sbin/calculator-restore` запускает только БД. Импорт запрещён при наличии маркера
-или любых пользовательских таблиц/последовательностей/представлений. Дамп сверяется по фиксированной SHA256.
-Импорт выполняется `pg_restore --single-transaction --exit-on-error --no-owner --no-acl`.
-Сверяются все числа строк, идентификаторы миграций и расширения; лишь затем создаётся root-only
-`/var/lib/calculator/database-restored`. Приложение и миграции не запускаются в restore.
-При ошибке проверки импортированные данные сохраняются, автодеплой остаётся заблокирован.
+## SSH-доступ CI
 
-Первый запуск: после успешного восстановления вызвать `sudo /usr/local/sbin/calculator-deploy 'deploy sha256:<digest>'`.
-Перед миграциями создаётся dump в `/var/lib/calculator/backups`, затем останавливаются только
-Calculator и его gateway, выполняются `check`, `migrate --noinput`, `migrate --check`, `collectstatic`,
-копирование проектной статики и проверка health/HTTP. `makemigrations` на production отсутствует.
-Автоматического отката БД/удаления данных нет. Сырые ошибки подавляются для защиты секретов.
-Последний успешный образ записывается в `/var/lib/calculator/current-image`.
+Для GitHub используется отдельный пользователь `calculator-deploy` без группы `docker`
+и без произвольного sudo. SSH-ключ ограничен параметрами
+`restrict,command="/usr/local/sbin/calculator-deploy-entry"`.
+Разрешена только команда `deploy sha256:<64 lowercase hex>` для образа из `duzer61/calculator`.
 
-## Ограниченный CI/CD
+Compose, сценарии и `authorized_keys` принадлежат root. Публичный `authorized_keys` имеет права `644`:
+SSH может читать его, но пользователь деплоя не может менять ограничения.
+Приватный ключ хранится в GitHub Secrets. Секреты приложения остаются на VPS.
+Для restore и deploy используется общий lock `/run/lock/calculator-deploy.lock`.
 
-`calculator-deploy` без группы docker, без произвольного sudo. Отдельный Ed25519 SSH-ключ создаёт пользователь.
-Приватный ключ сохраняется самостоятельно в GitHub Secret SSH_KEY. Личный ключ dan не используется для CI.
-Публичный `.pub` файл устанавливается `sudo /usr/local/sbin/calculator-authorize-key /path/to/calculator-deploy.pub`.
-Ключ ограничен `restrict,command="/usr/local/sbin/calculator-deploy-entry"`; home/authorized_keys принадлежат root.
-Публичный authorized_keys имеет режим 644: SSH может читать его, deployment-пользователь не может менять.
-Приватные ключи и .env имеют режим 600 и не входят в репозиторий.
-Проверено: отдельный ключ аутентифицируется, произвольная команда id отклоняется с exit 2;
-calculator-deploy не состоит в группе docker. Проверено подключение с точным публичным SSH_KNOWN_HOSTS
-и StrictHostKeyChecking=yes. Приватный ключ читал только штатный SSH, содержимое агенту не раскрывалось.
-Допускается только `deploy sha256:<64 lowercase hex>`; root-сценарий фиксирует репозиторий образа, Compose и пути.
-Общий lock для restore/deploy: `/run/lock/calculator-deploy.lock`.
-CI не может заменить root-owned файлы. Обновления этих файлов устанавливает администратор после проверки.
+| GitHub Secret | Назначение |
+| --- | --- |
+| `HOST` | `155.212.246.84` |
+| `USER` | `calculator-deploy` |
+| `SSH_KEY` | Полный приватный Ed25519-ключ CI, включая строки BEGIN/END; файл `.pub` не подходит |
+| `SSH_KNOWN_HOSTS` | Доверенная публичная запись сервера; хешированный формат `\|1\|` допустим |
+| `DOCKER_USERNAME` | `duzer61` |
+| `DOCKER_PASSWORD` | Docker Hub Personal Access Token с правами Repo Read & Write, не пароль аккаунта |
 
-Workflow выполняет проверки на main/adminvps-migration/PR, затем build/push только из main.
-Actions закреплены по commit SHA, права contents:read, persist-credentials:false.
-Деплой сериализован; запускается только при `CALCULATOR_DEPLOY_ENABLED=true` и после сборки main.
-До восстановления эту переменную не включать. Возможность workflow_dispatch предусмотрена.
-Secrets: HOST=155.212.246.84, USER=calculator-deploy, SSH_KEY, SSH_KNOWN_HOSTS,
-DOCKER_USERNAME=duzer61, DOCKER_PASSWORD (значение — Docker Hub PAT, не пароль аккаунта).
-Отдельный PAT calculator-github-actions: Repo Read & Write, Cloud Sandboxes выключен.
-SSH_KEY — полное содержимое отдельного приватного Ed25519-ключа без .pub, включая BEGIN/END;
-SSH_KNOWN_HOSTS — доверенная публичная запись AdminVPS, допускается хешированный формат |1|.
-Пользователь вводит секреты самостоятельно в интерфейсе GitHub; их значения агент не читает.
-Секреты приложения остаются на VPS. Старые GitHub Secrets БД workflow больше не использует.
-Telegram-отправка из старого workflow отсутствует; уведомления отдельно не настраивались.
+Доступ Cloud Sandboxes для Docker Hub PAT не требуется. SSH проверяет ключ хоста;
+проверку нельзя отключать при настройке CI.
 
-## Локальные проверки
+## Серверные файлы
 
-Образ собрался из чистых tracked-файлов main без реальных секретов. На отдельной восстановленной базе прошли
-Django check, migrate --check, makemigrations --check --dry-run, collectstatic, HTTP главной/входа/регистрации.
-Полный Compose проверен на 127.0.0.1:19000: health всех сервисов, HTTP, CSS, форма входа.
-Проверочные сервисы явно остановлены, тестовый порт освобождён. На VPS проверены loopback и публичный HTTPS:
-главная/вход/регистрация/CSS → 200; /admin → 301 /admin/; /admin/ → 302 на вход; неизвестный URL → 404.
+| Исходник в репозитории | Установленный файл |
+| --- | --- |
+| `docker-compose-calc.production.yml` | `/etc/calculator/compose.yml` |
+| `deployment/nginx-container.conf` | `/etc/calculator/nginx.conf` |
+| `scripts/deploy-root.sh` | `/usr/local/sbin/calculator-deploy` |
+| `scripts/deploy-entry.sh` | `/usr/local/sbin/calculator-deploy-entry` |
+| `scripts/restore-root.sh` | `/usr/local/sbin/calculator-restore` |
+| `scripts/authorize-key.sh` | `/usr/local/sbin/calculator-authorize-key` |
+| `deployment/verify.sql` | `/etc/calculator/verify.sql` |
+| `deployment/verification.sha256` | `/etc/calculator/verification.sha256` |
 
-## Подтверждённые запуски и текущее состояние
+CI обновляет образ приложения и не заменяет эти файлы. Изменения серверной конфигурации
+устанавливает администратор отдельно после проверки.
+`deployment/nginx/collider.hopto.org.conf` — шаблон первоначальной HTTP-настройки.
+Не заменять им работающий конфиг хоста: HTTPS-настройки добавлены Certbot.
 
-- PR #27: инфраструктура переноса. Main 53a97a24593afb42b79fb036b1131465f33576a6.
-- Первый build/push: https://github.com/Duzer61/New-Year-Toys-Calculator-WoT-2024/actions/runs/43405453621.
-  После замены пароля аккаунта на PAT вход в Docker Hub и публикация успешны, deploy был выключен.
-- PR #28: одна ссылка шаблона 404. Main ebcaecd5874ec22684a6282ed11577b6589a55de.
-- Build исправления: https://github.com/Duzer61/New-Year-Toys-Calculator-WoT-2024/actions/runs/43420837156.
-  checks/build успешны, deploy штатно пропущен до включения gate.
-- Последний вручную развёрнутый образ:
-  duzer61/calculator@sha256:aa572771fdbbe9c06aaac82971ea5f930110ecc0a57ac317da174a9303dde3d5.
-- No-IP: A collider.hopto.org = 155.212.246.84; проверены локальный resolver, 1.1.1.1, 8.8.8.8.
-  Публичной AAAA-записи нет. CAPTCHA не требует внешних разрешённых доменов.
-- До миграций каждого деплоя сохраняется отдельный root-only дамп в /var/lib/calculator/backups.
-  Исходный проверенный дамп на VPS: /var/lib/calculator/restore/calculator_db.dump.
-- Сохранённый marker восстановления: /var/lib/calculator/database-restored.
+## Первоначальная установка и восстановление
 
-Осталось включить CALCULATOR_DEPLOY_ENABLED=true, проследить workflow checks → build/push → restricted SSH →
-backup → Django migrate → healthy application, затем снова проверить HTTPS и записать итоговый workflow/digest.
-Начинать диагностику с jobs/steps и безопасных аннотаций, не сырых логов.
+`scripts/install-adminvps.sh` предназначен для подготовленного установочного комплекта:
+в его корне должны находиться `compose.yml`, `nginx.conf`, `.env.example`, `verify.sql`,
+`verification.sha256`, каталог `scripts` и дамп `restore/calculator_db.dump`.
+Повторная установка поверх существующего проекта запрещена самим сценарием.
 
-Сертификаты/ключи в /etc/letsencrypt не читать и не копировать. Новую учётную запись Certbot/таймер не создавать.
-Без отдельного согласования не выполнять down -v, prune, pg_restore --clean, сбросы БД или force Git.
+После установки администратор создаёт `.env` из шаблона с правами `600`, задаёт новые
+`DJANGO_KEY` и `POSTGRES_PASSWORD` и проверяет параметры подключения:
+`POSTGRES_DB=calculator`, `POSTGRES_USER=calculator`, `DB_HOST=db_django`, `DB_PORT=5432`,
+`DEBUG=False`, `ALLOWED_HOSTS=collider.hopto.org,127.0.0.1,localhost`.
+CAPTCHA генерируется внутри приложения через django-simple-captcha и не требует внешних ключей.
+
+До первого запуска приложения выполняется:
+
+```bash
+sudo /usr/local/sbin/calculator-restore
+```
+
+Восстановление разрешено только в пустую БД и до появления маркера
+`/var/lib/calculator/database-restored`. Сценарий проверяет фиксированную контрольную сумму,
+импортирует дамп одной транзакцией и сверяет таблицы, миграции и расширения.
+Ожидаемые данные привязаны к исходному дампу; для другого дампа требуется отдельная проверка
+и соответствующее обновление сценария. Повторять restore в работающую базу нельзя.
+
+Для авторизации отдельного публичного ключа:
+
+```bash
+sudo /usr/local/sbin/calculator-authorize-key /path/to/calculator-deploy.pub
+```
+
+## Резервные копии и HTTPS
+
+- Дампы перед миграциями: `/var/lib/calculator/backups/predeploy-*.dump`.
+- Исходный дамп восстановления: `/var/lib/calculator/restore/calculator_db.dump`.
+- Маркер восстановления: `/var/lib/calculator/database-restored`.
+- Последний успешно развёрнутый образ: `/var/lib/calculator/current-image`.
+
+Резервные копии доступны только root. Автоматическое удаление старых дампов не настроено.
+HTTP перенаправляется на HTTPS; сертификат продлевается существующим `certbot.timer`.
+Проверка продления:
+
+```bash
+sudo certbot renew --cert-name collider.hopto.org --dry-run
+```
+
+## Проверка после обновления
+
+Проверить статусы jobs и steps в GitHub Actions, затем главную страницу, вход, статику и админку.
+Ожидаемые ответы: главная и CSS — 200, HTTP → HTTPS — 301, `/admin` → `/admin/` — 301,
+`/admin/` без авторизации — 302 на вход, неизвестный URL — 404.
+При диагностике не публиковать сырые логи, содержимое `.env`, приватные ключи и токены.
+
+[Проверенный запуск полного CI/CD](https://github.com/Duzer61/New-Year-Toys-Calculator-WoT-2024/actions/runs/43424654797).
